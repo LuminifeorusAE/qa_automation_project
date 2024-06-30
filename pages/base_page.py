@@ -13,7 +13,7 @@ class BasePage:
     def visible_element(self, locator, timeout=5):
         return wait(self.driver, timeout).until(EC.visibility_of_element_located(locator))
 
-    def every_visible_elements(self, locator, timeout=5):
+    def every_visible_element(self, locator, timeout=5):
         return wait(self.driver, timeout).until(EC.visibility_of_all_elements_located(locator))
 
     def element_present(self, locator, timeout=5):
