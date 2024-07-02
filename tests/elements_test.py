@@ -1,8 +1,8 @@
 # elements_test.py
-
+import time
 
 import pytest
-from pages.elements_page import TextBoxPage, CheckBoxPage, RadioButtonPage
+from pages.elements_page import TextBoxPage, CheckBoxPage, RadioButtonPage, WebTablePage
 
 
 @pytest.mark.usefixtures("driver")
@@ -44,3 +44,11 @@ class TestRadioButton:
         assert output_yes == 'Yes', "'Yes' button has not been selected"
         assert output_impressive == 'Impressive', "'Impressive' button has not been selected"
         assert output_no == 'No', "'No' button has not been selected"
+
+
+class TestWebTable:
+    def test_web_table_add_person(self, driver):
+        web_table_page = WebTablePage(driver, "https://demoqa.com/webtables")
+        web_table_page.open()
+        web_table_page.add_new_person()
+        time.sleep(5)
