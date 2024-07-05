@@ -61,10 +61,23 @@ class TestWebTable:
         web_table_page = WebTablePage(driver, "https://demoqa.com/webtables")
         web_table_page.open()
         keyword = web_table_page.add_new_person()[random.randint(0, 5)]
-        time.sleep(5)
         web_table_page.search_person_by_keyword(keyword)
         table_result = web_table_page.check_found_person()
-        time.sleep(5)
         print(keyword)
         print(table_result)
         assert keyword in table_result, "Person has not found in the table"
+
+    def test_web_table_update_person_info(self,driver):
+        web_table_page = WebTablePage(driver, "https://demoqa.com/webtables")
+        web_table_page.open()
+        lastname = web_table_page.add_new_person()[1]
+        time.sleep(3)
+        web_table_page.search_person_by_keyword(lastname)
+        time.sleep(3)
+        age = web_table_page.update_person_info()
+        time.sleep(3)
+        row = web_table_page.check_found_person()
+        time.sleep(3)
+        print(age)
+        print(row)
+        assert age in row, "The Person card has not been changed"
