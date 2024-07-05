@@ -90,7 +90,7 @@ class RadioButtonPage(BasePage):
 class WebTablePage(BasePage):
     locators = WebTablePageLocators()
 
-    def add_new_person(self, count=1):
+    def add_new_person(self, ):
         count = 1
         while count != 0:
             person_info = next(generated_person())
@@ -99,15 +99,30 @@ class WebTablePage(BasePage):
             email = person_info.email
             age = person_info.age
             salary = person_info.salary
-            departament = person_info.departament
+            department = person_info.department
             self.visible_element(self.locators.ADD_BUTTON).click()
             self.visible_element(self.locators.FIRST_NAME_INPUT).send_keys(first_name)
             self.visible_element(self.locators.LASTNAME_INPUT).send_keys(last_name)
             self.visible_element(self.locators.EMAIL_INPUT).send_keys(email)
             self.visible_element(self.locators.AGE_INPUT).send_keys(age)
             self.visible_element(self.locators.SALARY_INPUT).send_keys(salary)
-            self.visible_element(self.locators.DEPARTMENT_INPUT).send_keys(departament)
+            self.visible_element(self.locators.DEPARTMENT_INPUT).send_keys(department)
             self.visible_element(self.locators.SUBMIT_BUTTON).click()
 
             count -= 1
-            return first_name, last_name, email, age, salary, departament
+            return [first_name, last_name, str(age), email, str(salary), department]
+
+    def check_new_added_person(self):
+        people_list = self.elements_are_present(self.locators.FULL_PEOPLE_LIST)
+        data = []
+        for item in people_list:
+            data.append(item.text.splitlines())
+        return data
+
+    def search_person_by_keyword(self, key_word):
+        self.visible_element(self.locators.SEARCH_INPUT).send_keys(key_word)
+
+    def check_found_person(self):
+        delete_button = self.element_present(self.locators.DELETE_BUTTON)
+        row = delete_button.find_element(*self.locators.ROW_PARENT)
+        return row.text.splitlines()
