@@ -2,7 +2,7 @@
 import time
 import random
 import pytest
-from pages.elements_page import TextBoxPage, CheckBoxPage, RadioButtonPage, WebTablePage
+from pages.elements_page import TextBoxPage, CheckBoxPage, RadioButtonPage, WebTablePage, ButtonsPage
 
 
 @pytest.mark.usefixtures("driver")
@@ -93,3 +93,17 @@ class TestWebTable:
         count = web_table_page.select_row()
         assert count == [5, 10, 20, 25, 100],\
             "Number of rows in the table has not been changed or has changed incorrectly"
+
+
+class TestButtonPage:
+    def test_buttons_clicks(self, driver):
+        buttons_page = ButtonsPage(driver, 'https://demoqa.com/buttons')
+        buttons_page.open()
+
+        double = buttons_page.button_clicks('double')
+        right = buttons_page.button_clicks('right')
+        click = buttons_page.button_clicks('dynamic')
+
+        assert double == "You have done a double click" "The double click button has not pressed"
+        assert right == "You have done a right click" "The right click button has not pressed"
+        assert click == "You have done a dynamic click" "The click button has not pressed"
