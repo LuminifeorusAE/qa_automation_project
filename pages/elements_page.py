@@ -1,3 +1,5 @@
+from selenium.webdriver.common.by import By
+
 from generator.generator import generated_person
 from locators.elements_page_locators import TextBoxPageLocators, CheckBoxPageLocators, RadioButtonPageLocators, \
     WebTablePageLocators
@@ -135,3 +137,27 @@ class WebTablePage(BasePage):
         self.visible_element(self.locators.AGE_INPUT).send_keys(age)
         self.visible_element(self.locators.SUBMIT_BUTTON).click()
         return str(age)
+
+    def delete_person_info(self):
+        self.visible_element(self.locators.DELETE_BUTTON).click()
+
+    def check_deleted_person(self):
+        return self.element_present(self.locators.NO_ROWS_FOUND_BUTTON).text
+
+    def select_row(self):
+        count = [5, 10, 20, 25, 100]
+        data = []
+        for x in count:
+            count_row_button = self.visible_element(self.locators.COUNT_ROW_LIST)
+            self.go_to_element(count_row_button)
+            count_row_button.click()
+            self.visible_element((By.CSS_SELECTOR, f'option[value="{x}"]')).click()
+            data.append(self.check_count_rows())
+        return data
+
+    def check_count_rows(self):
+        list_rows = self.elements_are_present(self.locators.FULL_PEOPLE_LIST)
+        return len(list_rows)
+
+
+
