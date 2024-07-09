@@ -91,7 +91,7 @@ class TestWebTable:
         web_table_page = WebTablePage(driver, 'https://demoqa.com/webtables')
         web_table_page.open()
         count = web_table_page.select_row()
-        assert count == [5, 10, 20, 25, 100],\
+        assert count == [5, 10, 20, 25, 100], \
             "Number of rows in the table has not been changed or has changed incorrectly"
 
 
@@ -116,10 +116,38 @@ class TestLinksPage:
         href_link, current_url = links_page.check_new_tab_simple_link()
         assert href_link == current_url, "The link is broken or url is incorrect"
 
-    def test_broken_link(self, driver):
+    def test_created_link(self, driver):
         links_page = LinksPage(driver, 'https://demoqa.com/links')
         links_page.open()
-        response_code = links_page.check_broken_link('https://demoqa.com/bad-request')
+        response_code = links_page.check_created_link('https://demoqa.com/created')
+        assert response_code == 201, "the link work or status code is 201"
+
+    def test_no_content(self, driver):
+        links_page = LinksPage(driver, 'https://demoqa.com/links')
+        links_page.open()
+        response_code = links_page.check_no_content_link('https://demoqa.com/no-content')
+        assert response_code == 204, "the link work or status code is 204"
+
+    def test_moved(self, driver):
+        links_page = LinksPage(driver, 'https://demoqa.com/links')
+        links_page.open()
+        response_code = links_page.check_moved_link('https://demoqa.com/moved')
+        assert response_code == 301, "the link work or status code is 301"
+
+    def test_forbidden(self, driver):
+        links_page = LinksPage(driver, 'https://demoqa.com/links')
+        links_page.open()
+        response_code = links_page.check_forbidden_link('https://demoqa.com/forbidden')
+        assert response_code == 403, "the link work or status code is 403"
+
+    def test_not_found(self, driver):
+        links_page = LinksPage(driver, 'https://demoqa.com/links')
+        links_page.open()
+        response_code = links_page.check_not_found_link('https://demoqa.com/invalid-url')
+        assert response_code == 404, "the link work or status code is 404"
+
+    def test_bad_request_link(self, driver):
+        links_page = LinksPage(driver, 'https://demoqa.com/links')
+        links_page.open()
+        response_code = links_page.check_bad_request_link('https://demoqa.com/bad-request')
         assert response_code == 400, "the link work or status code is 400"
-
-

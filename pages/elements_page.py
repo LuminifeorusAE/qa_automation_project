@@ -1,4 +1,5 @@
 import requests
+from selenium.common import ElementClickInterceptedException
 from selenium.webdriver.common.by import By
 
 from generator.generator import generated_person
@@ -192,25 +193,61 @@ class LinksPage(BasePage):
             simple_link.click()
             self.driver.switch_to.window(self.driver.window_handles[1])
             url = self.driver.current_url
-            return link_href,url
+            return link_href, url
         else:
-            return request.status_code,link_href
+            return request.status_code, link_href
 
-
-    def check_broken_link(self, url):
+    def check_created_link(self, url):
         request = requests.get(url)
-        if request.status_code == 200:
-            self.element_present(self.locators.BAD_REQUEST_LINK).click()
-        else:
-            return request.status_code
+        print(f"Request URL: {url}, Status Code: {request.status_code}")
+        self.element_present(self.locators.CREATED_LINK).click()
 
-    # def click_on_links(self,):
-    #     self.visible_element(self.locators.HOME_LINK).click()
-    #
-    #     self.visible_element(self.locators.CREATED_LINK).click()
-    #     self.visible_element(self.locators.NO_CONTENT_LINK).click()
-    #     self.visible_element(self.locators.MOVED_LINK).click()
-    #     self.visible_element(self.locators.BAD_REQUEST_LINK).click()
-    #     self.visible_element(self.locators.UNAUTHORIZED_LINK).click()
-    #     self.visible_element(self.locators.FORBIDDEN_LINK).click()
-    #     self.visible_element(self.locators.NOT_FOUND_LINK).click()
+        if request.status_code == 201:
+            return request.status_code
+        else:
+            print(request.status_code)
+
+    def check_no_content_link(self, url):
+        request = requests.get(url)
+        print(f"Request URL: {url}, Status Code: {request.status_code}")
+        self.element_present(self.locators.NO_CONTENT_LINK).click()
+
+        if request.status_code == 204:
+            return request.status_code
+        else:
+            print(request.status_code)
+
+    def check_moved_link(self, url):
+        request = requests.get(url)
+        print(f"Request URL: {url}, Status Code: {request.status_code}")
+        self.element_present(self.locators.MOVED_LINK).click()
+
+        if request.status_code == 301:
+            return request.status_code
+        else:
+            print(request.status_code)
+
+    def check_forbidden_link(self, url):
+        request = requests.get(url)
+        print(f"Request URL: {url}, Status Code: {request.status_code}")
+
+        forbidden_link = self.element_present(self.locators.FORBIDDEN_LINK)
+        self.go_to_element(forbidden_link)
+        return request.status_code
+
+    def check_not_found_link(self, url):
+        request = requests.get(url)
+        print(f"Request URL: {url}, Status Code: {request.status_code}")
+
+        not_found = self.element_present(self.locators.NOT_FOUND_LINK)
+        self.go_to_element(not_found)
+        return request.status_code
+
+    def check_bad_request_link(self, url):
+        request = requests.get(url)
+        self.element_present(self.locators.BAD_REQUEST_LINK).click()
+        if request.status_code == 200:
+            return request.status_code
+        else:
+            return None
+
