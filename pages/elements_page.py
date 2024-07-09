@@ -197,6 +197,18 @@ class LinksPage(BasePage):
         else:
             return request.status_code, link_href
 
+    def check_new_tab_dynamic_link(self):
+        dynamic_link = self.visible_element(self.locators.HOME_LINK)
+        link_href = (dynamic_link.get_attribute('href'))
+        request = requests.get(f"{link_href}")
+        if request.status_code == 200:
+            dynamic_link.click()
+            self.driver.switch_to.window(self.driver.window_handles[1])
+            url = self.driver.current_url
+            return link_href, url
+        else:
+            return request.status_code, link_href
+
     def check_created_link(self, url):
         request = requests.get(url)
         print(f"Request URL: {url}, Status Code: {request.status_code}")
