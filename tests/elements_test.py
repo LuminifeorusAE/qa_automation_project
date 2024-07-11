@@ -2,7 +2,8 @@
 import time
 import random
 import pytest
-from pages.elements_page import TextBoxPage, CheckBoxPage, RadioButtonPage, WebTablePage, ButtonsPage, LinksPage
+from pages.elements_page import TextBoxPage, CheckBoxPage, RadioButtonPage, WebTablePage, ButtonsPage, LinksPage, \
+    DownloadAndUploadPage
 
 
 @pytest.mark.usefixtures("driver")
@@ -157,3 +158,18 @@ class TestLinksPage:
         links_page.open()
         response_code = links_page.check_bad_request_link('https://demoqa.com/bad-request')
         assert response_code == 400, "the link work or status code is 400"
+
+
+class TestDownloadAndUpload:
+    def test_upload_file(self, driver):
+        upload_and_download_page = DownloadAndUploadPage(driver, 'https://demoqa.com/upload-download')
+        upload_and_download_page.open()
+        upload_and_download_page.upload_file()
+        file_name, result = upload_and_download_page.upload_file()
+        assert file_name == result, "The file has not ben uploaded"
+
+    def test_download_file(self, driver):
+        upload_and_download_page = DownloadAndUploadPage(driver, 'https://demoqa.com/upload-download')
+        upload_and_download_page.open()
+        check = upload_and_download_page.download_file()
+        assert check is True, "The file has not been downloaded"

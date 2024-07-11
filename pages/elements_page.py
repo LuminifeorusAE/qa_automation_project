@@ -1,10 +1,13 @@
+import base64
+import os
+
 import requests
 from selenium.common import ElementClickInterceptedException
 from selenium.webdriver.common.by import By
 
-from generator.generator import generated_person
+from generator.generator import generated_person, generated_file
 from locators.elements_page_locators import TextBoxPageLocators, CheckBoxPageLocators, RadioButtonPageLocators, \
-    WebTablePageLocators, ButtonsPageLocators, LinksPageLocators
+    WebTablePageLocators, ButtonsPageLocators, LinksPageLocators, DownloadAndUploadPageLocators
 from pages.base_page import BasePage
 import time
 import random
@@ -262,4 +265,30 @@ class LinksPage(BasePage):
             return request.status_code
         else:
             return None
+
+
+class DownloadAndUploadPage(BasePage):
+    locators = DownloadAndUploadPageLocators()
+
+    def upload_file(self):
+        file_name, path = generated_file()
+        self.element_present(self.locators.UPLOAD_FILE).send_keys(path)
+        os.remove(path)
+        text = self.element_present(self.locators.UPLOADED_RESULT).text
+        return file_name.split("\\")[-1], text.split("\\")[-1]
+
+    def download_file(self):
+        link = self.element_present(self.locators.DOWNLOAD_FILE).get_attribute('href')
+        link_b = base64.b64decode(link)
+        path_name_file = rf'C:\Users\David\PycharmProjects\qa_automation_project\filetest{random.randint(0, 999)}.jpeg'
+        with open(path_name_file, 'wb+') as file:
+            offset = link_b.find(b'\xff\xd8')
+            file.write(link_b[offset:])
+            check_file = os.path.exists(path_name_file)
+            file.close()
+            os.remove(path_name_file)
+        return check_file
+
+
+
 
