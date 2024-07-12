@@ -3,7 +3,7 @@ import time
 import random
 import pytest
 from pages.elements_page import TextBoxPage, CheckBoxPage, RadioButtonPage, WebTablePage, ButtonsPage, LinksPage, \
-    DownloadAndUploadPage
+    DownloadAndUploadPage, DynamicPropertiesPage
 
 
 @pytest.mark.usefixtures("driver")
@@ -173,3 +173,28 @@ class TestDownloadAndUpload:
         upload_and_download_page.open()
         check = upload_and_download_page.download_file()
         assert check is True, "The file has not been downloaded"
+
+
+class TestDynamicProperties:
+
+    def test_test_dynamic_properties(self, driver):
+        dynamic_properties_page = DynamicPropertiesPage(driver, "https://demoqa.com/dynamic-properties")
+        dynamic_properties_page.open()
+        time.sleep(5)  # fix method to work without time sleep
+        color_before, color_after = dynamic_properties_page.check_button_color_change()
+        assert color_after != color_before, "color button has not been change"
+
+    def test_enable_button(self,driver):
+        dynamic_properties_page = DynamicPropertiesPage(driver, "https://demoqa.com/dynamic-properties")
+        dynamic_properties_page.open()
+        enable_button = dynamic_properties_page.check_enable_button()
+        assert enable_button is True, "button is not enabled after five seconds"
+
+    def test_visible_button(self,driver):
+        dynamic_properties_page = DynamicPropertiesPage(driver, "https://demoqa.com/dynamic-properties")
+        dynamic_properties_page.open()
+        visible_button = dynamic_properties_page.check_visible_button()
+        assert visible_button is True, "enable button is not visible after second"
+
+
+

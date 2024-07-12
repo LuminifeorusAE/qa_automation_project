@@ -2,12 +2,13 @@ import base64
 import os
 
 import requests
-from selenium.common import ElementClickInterceptedException
+from selenium.common import ElementClickInterceptedException, TimeoutException
 from selenium.webdriver.common.by import By
 
 from generator.generator import generated_person, generated_file
 from locators.elements_page_locators import TextBoxPageLocators, CheckBoxPageLocators, RadioButtonPageLocators, \
-    WebTablePageLocators, ButtonsPageLocators, LinksPageLocators, DownloadAndUploadPageLocators
+    WebTablePageLocators, ButtonsPageLocators, LinksPageLocators, DownloadAndUploadPageLocators, \
+    DynamicPropertiesPageLocators
 from pages.base_page import BasePage
 import time
 import random
@@ -289,6 +290,23 @@ class DownloadAndUploadPage(BasePage):
             os.remove(path_name_file)
         return check_file
 
+
+class DynamicPropertiesPage(BasePage):
+    locators = DynamicPropertiesPageLocators()
+
+    def check_button_color_change(self):
+        color_button = self.element_present(self.locators.COLOR_CHANGE_BUTTON)
+        color_button_before = color_button.value_of_css_property('color')
+        color_button_after = color_button.value_of_css_property('color')
+        return color_button_before, color_button_after
+
+    def check_enable_button(self):
+        self.element_is_clickable(self.locators.ENABLE_AFTER_FIVE_SEC_BUTTON)
+        return True
+
+    def check_visible_button(self):
+        self.visible_element(self.locators.VISIBLE_AFTER_FIVE_SEC_BUTTON)
+        return  True
 
 
 
