@@ -11,7 +11,7 @@ class BasePage:
     def open(self):
         self.driver.get(self.url)
 
-    def visible_element(self, locator, timeout=7):
+    def visible_element(self, locator, timeout=10):
         return wait(self.driver, timeout).until(EC.visibility_of_element_located(locator))
 
     def every_visible_element(self, locator, timeout=5):

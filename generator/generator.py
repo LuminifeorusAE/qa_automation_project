@@ -17,7 +17,8 @@ def generated_person():
         department=faker.job(),
         email=faker.email(),
         current_address=faker.address(),
-        permanent_address=faker.address()
+        permanent_address=faker.address(),
+        mobile_number=faker.msisdn(),
     )
 
 
@@ -27,3 +28,49 @@ def generated_file():
     file.write(f"Hello World{random.randint(0, 999)}")
     file.close()
     return file.name, path
+
+# def generate_subject(value=None):
+#     subjects = [
+#         {
+#         value: 1,
+#         subject: "Hindi"
+#         value: 2,
+#         subject: "English"
+#     , {
+#         value: 3,
+#         subject: "Maths"
+#     }, {
+#         value: 4,
+#         subject: "Physics"
+#     }, {
+#         value: 5,
+#         subject: "Chemistry"
+#     }, {
+#         value: 6,
+#         subject: "Biology"
+#     }, {
+#         value: 7,
+#         subject: "Computer Science"
+#     }, {
+#         value: 8,
+#         subject: "Commerce"
+#     }, {
+#         value: 9,
+#         subject: "Accounting"
+#     }, {
+#         value: 10,
+#         subject: "Economics"
+#     }, {
+#         value: 11,
+#         subject: "Arts"
+#     }, {
+#         value: 12,
+#         subject: "Social Studies"
+#     }, {
+#         value: 13,
+#         subject: "History"
+#     }, {
+#         value: 14,
+#         subject: "Civics"
+#     }
+#     ]
