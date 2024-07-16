@@ -1,7 +1,8 @@
 import random
 import time
 
-from locators.alerts_frames_windwos_page_locators import BrowserWindowsPageLocators, AlertsPageLocators
+from locators.alerts_frames_windwos_page_locators import BrowserWindowsPageLocators, AlertsPageLocators, \
+    FramesPageLocators
 from pages.base_page import BasePage
 
 
@@ -42,7 +43,7 @@ class AlertsPage(BasePage):
         self.element_is_clickable(self.locators.CONFIRM_BOX_ALERT_BUTTON).click()
         confirm_box = self.driver.switch_to.alert
         confirm_box.accept()
-        text_result = self.element_present(self.locators.NAME_INPUT_CONFIRM_RESULT).text
+        text_result = self.element_present(self.locators.CONFIRM_BOX_ALERT_RESULT).text
         return text_result
 
     def check_prompt_box_input(self):
@@ -53,3 +54,26 @@ class AlertsPage(BasePage):
         input_box.accept()
         text_result = self.element_present(self.locators.NAME_INPUT_ALERT_BUTTON_RESULT).text
         return text, text_result
+
+
+class FramesPage(BasePage):
+    locators = FramesPageLocators()
+
+    def check_frame(self, frame_num):
+        if frame_num == 'frame1':
+            frame = self.element_present(self.locators.FRAME_1)
+            width = frame.get_attribute('width')
+            height = frame.get_attribute('height')
+            self.driver.switch_to.frame(frame)
+            text = self.element_present(self.locators.TITLE_FRAME).text
+            self.driver.switch_to.default_content()
+            return [text, width, height]
+
+        if frame_num == 'frame2':
+            frame = self.element_present(self.locators.FRAME_2)
+            width = frame.get_attribute('width')
+            height = frame.get_attribute('height')
+            self.driver.switch_to.frame(frame)
+            text = self.element_present(self.locators.TITLE_FRAME).text
+            return [text, width, height]
+
