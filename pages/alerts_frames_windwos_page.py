@@ -2,7 +2,7 @@ import random
 import time
 
 from locators.alerts_frames_windwos_page_locators import BrowserWindowsPageLocators, AlertsPageLocators, \
-    FramesPageLocators
+    FramesPageLocators, NestedFramesPageLocators
 from pages.base_page import BasePage
 
 
@@ -76,4 +76,18 @@ class FramesPage(BasePage):
             self.driver.switch_to.frame(frame)
             text = self.element_present(self.locators.TITLE_FRAME).text
             return [text, width, height]
+
+
+class NestedFramesPage(BasePage):
+    locators = NestedFramesPageLocators()
+
+    def check_nested_frames(self):  # !!! Optimize this method to have fewer lines and be more compact later !!!
+        parent_frame = self.element_present(self.locators.PARENT_FRAME)
+        self.driver.switch_to.frame(parent_frame)
+        parent_frame_text = self.element_present(self.locators.PARENT_FRAME_TEXT).text
+        child_frame = self.element_present(self.locators.CHILD_FRAME)
+        self.driver.switch_to.frame(child_frame)
+        child_frame_text = self.element_present(self.locators.CHILD_FRAME_TEXT).text
+        return parent_frame_text, child_frame_text
+
 
