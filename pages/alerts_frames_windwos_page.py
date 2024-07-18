@@ -2,7 +2,7 @@ import random
 import time
 
 from locators.alerts_frames_windwos_page_locators import BrowserWindowsPageLocators, AlertsPageLocators, \
-    FramesPageLocators, NestedFramesPageLocators
+    FramesPageLocators, NestedFramesPageLocators, ModalDialogPageLocators
 from pages.base_page import BasePage
 
 
@@ -91,3 +91,26 @@ class NestedFramesPage(BasePage):
         return parent_frame_text, child_frame_text
 
 
+class ModalButtonPage(BasePage):
+    locators = ModalDialogPageLocators()
+
+    def check_dialog_buttons(self):
+        buttons = [self.locators.SMALL_MODAL_BUTTON, self.locators.LARGE_MODAL_BUTTON]
+        texts = []
+
+        for button in buttons:
+
+            self.element_is_clickable(button).click()
+            # small_modal_title = self.visible_element(self.locators.TITLE_SMALL_MODAL).text
+            # large_modal_title = self.visible_element(self.locators.LARGE_MODAL_BUTTON).text
+
+            modal_body_text = self.element_present(self.locators.MODAL_BODY).text
+            texts.append(modal_body_text)
+
+            if button == self.locators.SMALL_MODAL_BUTTON:
+                self.element_is_clickable(self.locators.CLOSE_BUTTON).click()
+                self.driver.switch_to.default_content()
+
+        print(texts[0], "\n", texts[1])
+
+        return texts[0], texts[1]

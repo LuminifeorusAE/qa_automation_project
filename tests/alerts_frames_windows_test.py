@@ -1,6 +1,7 @@
 import time
 
-from pages.alerts_frames_windwos_page import BrowserWindowsPage, AlertsPage, FramesPage, NestedFramesPage
+from pages.alerts_frames_windwos_page import BrowserWindowsPage, AlertsPage, FramesPage, NestedFramesPage, \
+    ModalButtonPage
 
 
 class TestAlertsFramesWindows:
@@ -58,8 +59,15 @@ class TestNestedFramesPage:
             frames_page = NestedFramesPage(driver, "https://demoqa.com/nestedframes")
             frames_page.open()
             child_frame_text, parent_frame_text = frames_page.check_nested_frames()
-            assert  child_frame_text == "Parent frame", ""
+            assert child_frame_text == "Parent frame", ""
             assert parent_frame_text == "Child Iframe", ""
 
 
-
+class TestModalDialogs:
+    class TestModalDialogsPage:
+        def test_modal_dialogs(self, driver):
+            modal_dialog = ModalButtonPage(driver, "https://demoqa.com/modal-dialogs")
+            modal_dialog.open()
+            small_modal_text, large_modal_text = modal_dialog.check_dialog_buttons()
+            assert len(small_modal_text) < len(large_modal_text), "Small modal text is not shorter than large modal text"
+            # add to the test title checkers
