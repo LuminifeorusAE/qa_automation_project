@@ -15,5 +15,10 @@ class Person:
     mobile_number: str = None
 
 
+@dataclass
+class Color:
+    color_name: list = None
+
+
 
 

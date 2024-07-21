@@ -1,7 +1,7 @@
 import random
 
 from faker import Faker
-from data.data import Person
+from data.data import Person, Color
 
 faker = Faker()
 Faker.seed()
@@ -29,7 +29,13 @@ def generated_file():
     file.close()
     return file.name, path
 
-# def generate_subject(value=None):
+
+def generated_color():
+    yield Color(
+        color_name=["Red", "Blue", "Green", "Yellow", "Purple", "Black", "White", "Voilet", "Indigo", "Magenta", "Aqua"]
+    )
+
+# def denerate_subject(value=None):
 #     subjects = [
 #         {
 #         value: 1,
