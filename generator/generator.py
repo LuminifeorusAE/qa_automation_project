@@ -1,7 +1,7 @@
 import random
 
 from faker import Faker
-from data.data import Person, Color
+from data.data import Person, Color, Date
 
 faker = Faker()
 Faker.seed()
@@ -35,6 +35,15 @@ def generated_color():
         color_name=["Red", "Blue", "Green", "Yellow", "Purple", "Black", "White", "Voilet", "Indigo", "Magenta", "Aqua"]
     )
 
+
+def generate_date():
+    yield Date(
+        year=faker.year(),
+        month=faker.month_name(),
+        day=faker.day_of_month(),
+        time="12:15",  # !!!create a method that will generate time randomly with 15 minute intervals!!!
+
+    )
 # def denerate_subject(value=None):
 #     subjects = [
 #         {
