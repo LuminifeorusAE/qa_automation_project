@@ -1,6 +1,7 @@
 import time
 
-from pages.widgets_test_page import AccordianPage, DatePickerPage, SliderPage, ProgressBarPage, TabsPage
+from pages.widgets_test_page import AccordianPage, DatePickerPage, SliderPage, ProgressBarPage, TabsPage, \
+    ToolTipsPage
 from pages.widgets_test_page import AutoCompletePage
 
 
@@ -35,7 +36,7 @@ class TestAutoCompletePage:
         count_value_before, count_value_after = auto_complete_page.remove_value_from_multi()
         assert count_value_before != count_value_after, "value was not deleted"
 
-    def test_fill_single_autocomplete(self,driver):
+    def test_fill_single_autocomplete(self, driver):
         auto_complete_page = AutoCompletePage(driver, "https://demoqa.com/auto-complete")
         auto_complete_page.open()
         color = auto_complete_page.fill_single_input()
@@ -56,7 +57,7 @@ class TestDatePickerPage:
         value_date_before, value_date_after = date_picker_page.select_date_and_time()
         print(value_date_before)
         print(value_date_after)
-        assert value_date_before != value_date_after,  'the date and time have not been changed'
+        assert value_date_before != value_date_after, 'the date and time have not been changed'
 
 
 class TestSliderPage:
@@ -74,7 +75,7 @@ class TestProgressBarPage:
         progress_bar_page = ProgressBarPage(driver, "https://demoqa.com/progress-bar")
         progress_bar_page.open()
         value_before, value_after = progress_bar_page.change_progress_bar_value()
-        assert value_before != value_after , "progress bar value has not been changed"
+        assert value_before != value_after, "progress bar value has not been changed"
 
 
 class TestTabsPage:
@@ -92,18 +93,15 @@ class TestTabsPage:
         # assert more_tab == 'More' and more_content != 0,'the tab "more" was not pressed or the text is missing'
 
 
+class TestToolTips:
 
+    def test_tool_tips(self, driver):
+        tooltips_page = ToolTipsPage(driver, 'https://demoqa.com/tool-tips')
+        tooltips_page.open()
 
+        button_text, field_text, contrary_text, section_text = tooltips_page.check_tool_tips()
 
-
-
-
-
-
-
-
-
-
-
-
-
+        assert button_text == "You hovered over the Button"
+        assert field_text == "You hovered over the text field"
+        assert contrary_text == "You hovered over the Contrary"
+        assert section_text == "You hovered over the 1.10.32"

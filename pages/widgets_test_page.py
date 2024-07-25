@@ -7,7 +7,7 @@ from selenium.webdriver.support.select import Select
 
 from generator.generator import generated_color, generate_date
 from locators.widgeds_locators import AccordianPageLocators, AutoCompletePageLocators, DatePickerPageLocators, \
-    SliderPageLocators, ProgressBarPageLocators, TabsPageLocators
+    SliderPageLocators, ProgressBarPageLocators, TabsPageLocators, ToolTipsPageLocators
 from pages.base_page import BasePage
 
 
@@ -179,3 +179,39 @@ class TabsPage(BasePage):
         tabs_content = self.visible_element(tabs[tabs_name]['content']).text
 
         return tabs_titles.text, len(tabs_content)
+
+
+class ToolTipsPage(BasePage):
+    locators = ToolTipsPageLocators()
+
+    def get_text_from_tool_tips(self, hover_element, wait_element):
+        element = self.element_present(hover_element)
+        self.go_to_element(element)
+        self.action_move_to_element(element)
+        time.sleep(1)  # !!! rewrite this part later to code work without time sleep!!!
+        self.visible_element(wait_element)
+        tool_tip_text = self.visible_element(self.locators.TOOL_TIPS_INNERS)
+        return tool_tip_text.text
+
+    def check_tool_tips(self):
+        tool_tip_text_button = self.get_text_from_tool_tips(
+            self.locators.HOVER_ME_TO_SEE_BUTTON,
+            self.locators.TOOL_TIP_BUTTON
+        )
+
+        tool_tip_text_field = self.get_text_from_tool_tips(
+            self.locators.INPUT_HOVER_ME_TO_SEE,
+            self.locators.TOOL_TIP_INPUT
+        )
+
+        tool_tip_text_contrary = self.get_text_from_tool_tips(
+            self.locators.CONTRARY_XPATH,
+            self.locators.TOOL_TIP_CONTRARY
+        )
+
+        tool_tip_text_section = self.get_text_from_tool_tips(
+            self.locators.SECTION_XPATH,
+            self.locators.TOOL_TIP_SECTION
+        )
+
+        return tool_tip_text_button, tool_tip_text_field, tool_tip_text_contrary, tool_tip_text_section
