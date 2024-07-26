@@ -307,6 +307,3 @@ class DynamicPropertiesPage(BasePage):
     def check_visible_button(self):
         self.visible_element(self.locators.VISIBLE_AFTER_FIVE_SEC_BUTTON)
         return True
-
-
-

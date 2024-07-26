@@ -1,7 +1,7 @@
 import time
 
 from pages.widgets_test_page import AccordianPage, DatePickerPage, SliderPage, ProgressBarPage, TabsPage, \
-    ToolTipsPage
+    ToolTipsPage, MenuItemPage
 from pages.widgets_test_page import AutoCompletePage
 
 
@@ -105,3 +105,13 @@ class TestToolTips:
         assert field_text == "You hovered over the text field"
         assert contrary_text == "You hovered over the Contrary"
         assert section_text == "You hovered over the 1.10.32"
+
+
+class TestMenuItemPage:
+
+    def test_main_items(self, driver):
+        main_item_page = MenuItemPage(driver, "https://demoqa.com/menu#")
+        main_item_page.open()
+        data = main_item_page.check_menu_items()
+        assert data == ("['Main Item 1', 'Main Item 2', 'Sub Item', 'Sub Item', 'SUB SUB LIST »', 'Sub Sub Item 1',"
+                        " 'Sub Sub Item 2', 'Main Item 3']"), "menu items do not exist or have not been selected"

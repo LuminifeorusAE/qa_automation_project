@@ -54,7 +54,6 @@ class TabsPageLocators:
 
 
 class ToolTipsPageLocators:
-
     HOVER_ME_TO_SEE_BUTTON = (By.CSS_SELECTOR, 'button[id="toolTipButton"]')
     TOOL_TIP_BUTTON = (By.CSS_SELECTOR, 'button[aria-describedby="buttonToolTip"]')
 
@@ -68,3 +67,7 @@ class ToolTipsPageLocators:
     TOOL_TIP_SECTION = (By.CSS_SELECTOR, 'a[aria-describedby="sectionToolTip"]')
 
     TOOL_TIPS_INNERS = (By.CSS_SELECTOR, 'div[class="tooltip-inner"]')
+
+
+class MenuItemPageLocators:
+    MAIN_ITEM_LIST = (By.CSS_SELECTOR, "ul[id='nav'] li a")
