@@ -8,7 +8,7 @@ from selenium.webdriver.support.select import Select
 from generator.generator import generated_color, generate_date
 from locators.widgeds_locators import AccordianPageLocators, AutoCompletePageLocators, DatePickerPageLocators, \
     SliderPageLocators, ProgressBarPageLocators, TabsPageLocators, ToolTipsPageLocators, \
-    MenuItemPageLocators
+    MenuItemPageLocators, SelectMenuPageLocators
 from pages.base_page import BasePage
 
 
@@ -230,5 +230,68 @@ class MenuItemPage(BasePage):
         return data
 
 
+class SelectMenuPage(BasePage):
+    locators = SelectMenuPageLocators()
 
+    def check_click_on_select_value_items(self):
+        select_value = self.element_is_clickable(self.locators.SELECT_VALUE_DROP)
+        select_value.click()
 
+        options = [
+            "Group 1, option 1",
+            "Group 1, option 2",
+            "Group 2, option 1",
+            "Group 2, option 2",
+            "A root option",
+            "Another root option"
+        ]
+
+        select_option = random.choice(options)
+
+        option_input = self.element_present(self.locators.SELECT_VALUE_DROP_OPTION)
+        option_input.send_keys(select_option)
+        option_input.send_keys(Keys.ENTER)
+        return select_option
+
+    def check_select_one_items(self):
+        select_one = self.element_is_clickable(self.locators.SELECT_ONE_DROP)
+        select_one.click()
+        options = ["Dr.",
+                   "Mr.",
+                   "Mrs.",
+                   "Ms.",
+                   "Prof.",
+                   "Other", ]
+
+        select_option = random.choice(options)
+
+        option_input = self.element_present(self.locators.SELECT_ONE_DROP_OPTION)
+        option_input.send_keys(select_option)
+        option_input.send_keys(Keys.ENTER)
+        return select_option
+
+    def check_old_style_menu(self):
+        color_option = self.element_is_clickable(self.locators.SELECT_OLD_STYLE_DROP)
+        color_option.click()
+        color_input = random.sample(next(generated_color()).color_name, k=1)
+        color_option.send_keys(color_input)
+        color_option.send_keys(Keys.ENTER)
+        return color_input, color_option.text
+
+    def check_multiselect_drop_down(self):
+        select_color = self.visible_element(self.locators.MULTISELECT_DROP)
+        select_color.click()
+        option_input = self.element_present(self.locators.MULTISELECT_DROP_OPTION)
+        count = 0
+        while count < 4:
+            option_input.send_keys(Keys.ENTER)
+            count += 1
+        raw_text = select_color.text
+        selected_colors = [color.strip() for color in raw_text.split('\n') if
+                           color.strip() and 'selected' not in color and 'No options' not in color]
+        filtered_list = list(set(selected_colors))
+        return filtered_list
+
+    def check_standard_multi_select(self):
+        multi_select = self.visible_element(self.locators.STANDARD_MULTI_SELECT)
+        return multi_select.text.replace('\n', " ")

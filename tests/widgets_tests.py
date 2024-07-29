@@ -1,7 +1,7 @@
 import time
 
 from pages.widgets_test_page import AccordianPage, DatePickerPage, SliderPage, ProgressBarPage, TabsPage, \
-    ToolTipsPage, MenuItemPage
+    ToolTipsPage, MenuItemPage, SelectMenuPage
 from pages.widgets_test_page import AutoCompletePage
 
 
@@ -115,3 +115,33 @@ class TestMenuItemPage:
         data = main_item_page.check_menu_items()
         assert data == ("['Main Item 1', 'Main Item 2', 'Sub Item', 'Sub Item', 'SUB SUB LIST »', 'Sub Sub Item 1',"
                         " 'Sub Sub Item 2', 'Main Item 3']"), "menu items do not exist or have not been selected"
+
+
+class TestSelectMenuPage:
+
+    def test_select_menu(self, driver):
+        select_menu_page = SelectMenuPage(driver, "https://demoqa.com/select-menu")
+        select_menu_page.open()
+        select_value = select_menu_page.check_click_on_select_value_items()
+        select_one = select_menu_page.check_select_one_items()
+        color_input, selected_color_text = select_menu_page.check_old_style_menu()
+        multiselect = select_menu_page.check_multiselect_drop_down()
+        standard_multi = select_menu_page.check_standard_multi_select()
+        assert select_value in [
+            "Group 1, option 1",
+            "Group 1, option 2",
+            "Group 2, option 1",
+            "Group 2, option 2",
+            "A root option",
+            "Another root option"
+        ], f"Unexpected select value option: {select_value}"
+
+        assert select_one in ["Dr.", "Mr.", "Mrs.", "Ms.", "Prof.",
+                              "Other"], f"Unexpected select one option: {select_one}"
+
+        assert color_input[0] in selected_color_text, f"Color {color_input[0]} is not in the list of expected colors"
+
+        expected_colors = ['Red', 'Blue', 'Green', 'Black']
+        for color in expected_colors:
+            assert color in multiselect, f"{color} was not found in the selected colors"
+        assert standard_multi == "Volvo Saab Opel Audi", f"Expected 'Volvo Saab Opel Audi' but got '{standard_multi}'"
