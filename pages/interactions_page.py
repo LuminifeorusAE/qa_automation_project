@@ -1,12 +1,12 @@
 import random
 import time
 
-from locators.interactions_locators import InteractionsPageLocators
+from locators.interactions_locators import SortablePageLocators, SelectablePageLocators
 from pages.base_page import BasePage
 
 
-class InteractionsPage(BasePage):
-    locators = InteractionsPageLocators()
+class SortablePage(BasePage):
+    locators = SortablePageLocators()
 
     def get_sortable_items(self, elements):
         item_list = self.every_visible_element(elements)
@@ -32,6 +32,26 @@ class InteractionsPage(BasePage):
         order_after = self.get_sortable_items(self.locators.GRID_PANEL_ITEM)
         return order_before, order_after
 
+
+class SelectablePage(BasePage):
+
+    locators = SelectablePageLocators()
+
+    def click_selectable_item(self, elements):
+        item_list = self.every_visible_element(elements)
+        random.sample(item_list, k=1)[0].click()
+
+    def select_list_item(self):
+        self.visible_element(self.locators.TAB_LIST).click()
+        self.click_selectable_item(self.locators.LIST_ITEM)
+        active_element = self.visible_element(self.locators.LIST_ITEM_ACTIVE)
+        return active_element.text
+
+    def select_grid_item(self):
+        self.visible_element(self.locators.TAB_GRID).click()
+        self.click_selectable_item(self.locators.GRID_ITEM)
+        active_element = self.visible_element(self.locators.GRID_ITEM_ACTIVE)
+        return active_element.text
 
 
 
