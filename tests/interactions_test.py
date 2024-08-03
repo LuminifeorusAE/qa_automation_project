@@ -1,4 +1,6 @@
-from pages.interactions_page import SortablePage, SelectablePage
+import time
+
+from pages.interactions_page import SortablePage, SelectablePage, ResizablePage
 
 
 class TestInteractionsPage:
@@ -12,7 +14,6 @@ class TestInteractionsPage:
             assert list_before != list_after, "the order of the list has not been changed"
             assert grid_before != grid_after, "the order of the list has not been changed"
 
-
     class TestSelectablePage:
 
         def test_selectable(self, driver):
@@ -23,6 +24,15 @@ class TestInteractionsPage:
             assert len(item_list) != 0, "no elements were selected"
             assert len(item_grid) != 0, "no elements were selected"
 
+    class TestResizablePage:
 
+        def test_resizable(self, driver):
+            resizable_page = ResizablePage(driver, "https://demoqa.com/resizable")
+            resizable_page.open()
+            max_box, min_box = resizable_page.change_size_resizable_box()
+            max_resize, min_resize = resizable_page.change_size_resizable()
+            print(max_box, min_box)
+            assert min_box != max_box, "resizable has not been changed"
 
+            assert min_resize != max_resize, "resizable has not been changed"
 
