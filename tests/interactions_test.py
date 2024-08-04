@@ -1,6 +1,6 @@
 import time
 
-from pages.interactions_page import SortablePage, SelectablePage, ResizablePage
+from pages.interactions_page import SortablePage, SelectablePage, ResizablePage, DroppablePage
 
 
 class TestInteractionsPage:
@@ -31,8 +31,36 @@ class TestInteractionsPage:
             resizable_page.open()
             max_box, min_box = resizable_page.change_size_resizable_box()
             max_resize, min_resize = resizable_page.change_size_resizable()
-            print(max_box, min_box)
             assert min_box != max_box, "resizable has not been changed"
 
             assert min_resize != max_resize, "resizable has not been changed"
 
+    class TestDroppablePage:
+        def test_simple_droppable(self, driver):
+            droppable_page = DroppablePage(driver, "https://demoqa.com/droppable")
+            droppable_page.open()
+            text = droppable_page.drop_simple()
+            assert text == "Dropped!", "The element has not been dropped"
+
+        def test_accept_droppable(self, driver):
+            droppable_page = DroppablePage(driver, "https://demoqa.com/droppable")
+            droppable_page.open()
+            not_accept, accept = droppable_page.drop_accept()
+            assert not_accept == "Drop here", "the dropped element has been accepted"
+            assert accept == "Dropped!", "the dropped element has not been accepted"
+
+        def test_prevent_propogation_droppable(self, driver):
+            droppable_page = DroppablePage(driver, "https://demoqa.com/droppable")
+            droppable_page.open()
+            not_greedy_text, greedy_inner_text, outer_droppable_greddy_text, \
+            inner_droppable_greedy_text = droppable_page.drop_prevent_propogation()
+            assert not_greedy_text == "Dropped!", "element has not been dropped or accepted incorectly"
+            assert greedy_inner_text == "Dropped!", "element has not been dropped or accepted incorectly"
+            assert outer_droppable_greddy_text == "Dropped!", "element has not been dropped or accepted incorectly"
+            assert inner_droppable_greedy_text == "Outer droppable", "element has not been dropped or accepted incorectly"
+
+        def test_revert_draggable_droppable(self, driver):
+            droppable_page = DroppablePage(driver, "https://demoqa.com/droppable")
+            droppable_page.open()
+            drop_here_revert_text = droppable_page.revert_draggable()
+            assert drop_here_revert_text == "Dropped!", "element has not been dropped or accepted incorectly"
