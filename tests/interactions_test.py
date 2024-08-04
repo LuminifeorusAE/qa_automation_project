@@ -52,15 +52,16 @@ class TestInteractionsPage:
         def test_prevent_propogation_droppable(self, driver):
             droppable_page = DroppablePage(driver, "https://demoqa.com/droppable")
             droppable_page.open()
-            not_greedy_text, greedy_inner_text, outer_droppable_greddy_text, \
+            not_greedy_text, greedy_inner_text, outer_droppable_greedy_text, \
             inner_droppable_greedy_text = droppable_page.drop_prevent_propogation()
-            assert not_greedy_text == "Dropped!", "element has not been dropped or accepted incorectly"
-            assert greedy_inner_text == "Dropped!", "element has not been dropped or accepted incorectly"
-            assert outer_droppable_greddy_text == "Dropped!", "element has not been dropped or accepted incorectly"
-            assert inner_droppable_greedy_text == "Outer droppable", "element has not been dropped or accepted incorectly"
+            assert not_greedy_text == "Dropped!", "element has not been dropped or accepted incorrectly"
+            assert greedy_inner_text == "Dropped!", "element has not been dropped or accepted incorrectly"
+            assert outer_droppable_greedy_text == "Dropped!", "element has not been dropped or accepted incorrectly"
+            assert inner_droppable_greedy_text == "Outer droppable", "element has not been dropped or accepted incorrectly"
 
         def test_revert_draggable_droppable(self, driver):
             droppable_page = DroppablePage(driver, "https://demoqa.com/droppable")
             droppable_page.open()
-            drop_here_revert_text = droppable_page.revert_draggable()
-            assert drop_here_revert_text == "Dropped!", "element has not been dropped or accepted incorectly"
+            position_after_drop, position_after_revert, drop_here_text = droppable_page.revert_draggable()
+            assert position_after_drop != position_after_revert,"elements position has not been changed"
+            assert drop_here_text == "Dropped!", "element has not been dropped or accepted incorrectly"

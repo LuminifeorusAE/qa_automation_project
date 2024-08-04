@@ -131,6 +131,9 @@ class DroppablePage(BasePage):
         not_revert_box = self.element_present(self.locators.NOT_REVERT_BOX)
         drop_here = self.element_present(self.locators.DROP_HERE_REVERT_BOX)
         self.action_drag_and_drop_to_element(will_revert_box,drop_here)
+        position_after_drop = will_revert_box.get_attribute('style')
+        time.sleep(1)
+        position_after_revert = will_revert_box.get_attribute('style')
         self.action_drag_and_drop_to_element(not_revert_box,drop_here)
-        return drop_here.text
+        return position_after_drop, position_after_revert, drop_here.text
 
