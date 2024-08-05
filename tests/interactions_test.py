@@ -1,6 +1,6 @@
 import time
 
-from pages.interactions_page import SortablePage, SelectablePage, ResizablePage, DroppablePage
+from pages.interactions_page import SortablePage, SelectablePage, ResizablePage, DroppablePage, DraggablePage
 
 
 class TestInteractionsPage:
@@ -53,7 +53,7 @@ class TestInteractionsPage:
             droppable_page = DroppablePage(driver, "https://demoqa.com/droppable")
             droppable_page.open()
             not_greedy_text, greedy_inner_text, outer_droppable_greedy_text, \
-            inner_droppable_greedy_text = droppable_page.drop_prevent_propogation()
+                inner_droppable_greedy_text = droppable_page.drop_prevent_propogation()
             assert not_greedy_text == "Dropped!", "element has not been dropped or accepted incorrectly"
             assert greedy_inner_text == "Dropped!", "element has not been dropped or accepted incorrectly"
             assert outer_droppable_greedy_text == "Dropped!", "element has not been dropped or accepted incorrectly"
@@ -63,5 +63,35 @@ class TestInteractionsPage:
             droppable_page = DroppablePage(driver, "https://demoqa.com/droppable")
             droppable_page.open()
             position_after_drop, position_after_revert, drop_here_text = droppable_page.revert_draggable()
-            assert position_after_drop != position_after_revert,"elements position has not been changed"
+            assert position_after_drop != position_after_revert, "elements position has not been changed"
             assert drop_here_text == "Dropped!", "element has not been dropped or accepted incorrectly"
+
+
+class TestDraggablePage:
+    def test_simple_draggable(self, driver):
+        draggable_page = DraggablePage(driver, "https://demoqa.com/dragabble")
+        draggable_page.open()
+        before, after = draggable_page.simple_drag_box()
+        assert before != after, "the position of the box has not been changed"
+
+    def test_axis_restricted_droppable(self, driver):
+        draggable_page = DraggablePage(driver, "https://demoqa.com/dragabble")
+        draggable_page.open()
+        top_x, left_x = draggable_page.axis_restricted_x()
+        top_y, left_y = draggable_page.axis_restricted_y()
+        assert top_x[0][0] == top_x[1][0] and int(
+            top_x[1][0]) == 0, 'box position has not been changed or there is a shift on y_axis'
+        assert left_x[0][0] != left_x[1][0] and int(
+            left_x[1][0]) != 0, 'box position has not been changed or there is a shift on y_axis'
+        assert top_y[0][0] != top_y[1][0] and int(
+            top_y[1][0]) != 0, 'box position has not been changed or there is a shift on y_axis'
+        assert left_y[0][0] == left_y[1][0] and int(
+            left_y[1][0]) == 0, 'box position has not been changed or there is a shift on y_axis'
+
+    def test_container_restricted_draggable(self, driver):
+        draggable_page = DraggablePage(driver, "https://demoqa.com/dragabble")
+        draggable_page.open()
+
+    def test_cursor_style_droppable(self, driver):
+        draggable_page = DraggablePage(driver, "https://demoqa.com/dragabble")
+        draggable_page.open()

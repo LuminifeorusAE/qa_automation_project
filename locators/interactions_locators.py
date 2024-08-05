@@ -58,3 +58,28 @@ class DroppablePageLocators:
     NOT_REVERT_BOX = (By.CSS_SELECTOR, "div[id='notRevertable']")
     WILL_REVERT= (By.CSS_SELECTOR, "div[id='revertable']")
     DROP_HERE_REVERT_BOX = (By.CSS_SELECTOR, "div[id='revertableDropContainer'] div[id='droppable']")
+
+class DraggablePageLocators:
+
+    # Simple
+    DRAG_ME_BOX = (By.CSS_SELECTOR, 'div[id="draggableExample-tabpane-simple"] div[id="dragBox"]')
+
+    # Axis Restricted
+    AXIS_RESTRICTED_TAB = (By.CSS_SELECTOR, 'a[id="draggableExample-tab-axisRestriction"]')
+    ONLY_X_BOX = (By.CSS_SELECTOR, 'div[id="restrictedX"]')
+    ONLY_Y_BOX = (By.CSS_SELECTOR, 'div[id="restrictedY"]')
+
+    # Container Restricted
+    CONTAINER_RESTRICTED_TAB = (By.CSS_SELECTOR, 'a[id="draggableExample-tab-containerRestriction"]')
+    CONTAINED_WITHIN_BOX = (By.CSS_SELECTOR, 'div[class="draggable ui-widget-content ui-draggable ui-draggable-handle"]')
+    BOX_WRAPPER = (By.CSS_SELECTOR, 'div[id="containmentWrapper"]')
+    CONTAINED_WITHIN_PARENT = (By.CSS_SELECTOR, 'span[class="ui-widget-header ui-draggable ui-draggable-handle"]')
+    PARENT_WRAPPER = (By.CSS_SELECTOR, 'div[class="draggable ui-widget-content m-3"]')
+
+    # Cursor Style
+
+    CURSOR_STYLE_TAB = (By.CSS_SELECTOR, 'a[id="draggableExample-tab-cursorStyle"]')
+    CURSOR_STICK_TO_CENTER_BOX = (By.CSS_SELECTOR, 'div[id="cursorCenter"]')
+    CURSOR_AT_TOP_LEFT_BOX = (By.CSS_SELECTOR, 'div[id="cursorTopLeft"]')
+    CURSOR_IS_AT_BOTTOM_BOX = (By.CSS_SELECTOR, 'div[id="cursorBottom"]')
+
