@@ -2,6 +2,8 @@ import random
 import re
 import time
 
+from selenium.common import MoveTargetOutOfBoundsException
+
 from locators.interactions_locators import SortablePageLocators, SelectablePageLocators, ResizablePageLocators, \
     DroppablePageLocators, DraggablePageLocators
 from pages.base_page import BasePage
@@ -180,3 +182,15 @@ class DraggablePage(BasePage):
         left_y_before = self.get_left_position(position_y[0])
         left_y_after = self.get_left_position(position_y[1])
         return [top_y_before, top_y_after], [left_y_before, left_y_after]
+
+    def restricted_draggable(self):
+        self.visible_element(self.locators.CONTAINER_RESTRICTED_TAB).click()
+        within_box = self.visible_element(self.locators.CONTAINED_WITHIN_BOX)
+        x_offset = random.randint(1000, 1000)
+        y_offset = random.randint(1000, 1000)
+
+        self.action_drag_and_drop_by_offset(within_box, x_offset, y_offset)
+
+        box_position = within_box.get_attribute('style')
+
+        return box_position

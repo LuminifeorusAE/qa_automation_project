@@ -37,7 +37,7 @@ class ResizablePageLocators:
 class DroppablePageLocators:
     # Simple
     DRAG_ME_BOX = (By.CSS_SELECTOR, 'div[id="draggable"]')
-    DROP_HERE_BOX = (By.CSS_SELECTOR,  "div[id='droppable']")
+    DROP_HERE_BOX = (By.CSS_SELECTOR, "div[id='droppable']")
 
     # Accept
     ACCEPT_TAB = (By.CSS_SELECTOR, "a[id='droppableExample-tab-accept']")
@@ -56,11 +56,11 @@ class DroppablePageLocators:
     # Revert Draggable
     REVERT_DRAGGABLE_TAB = (By.CSS_SELECTOR, "a[id='droppableExample-tab-revertable']")
     NOT_REVERT_BOX = (By.CSS_SELECTOR, "div[id='notRevertable']")
-    WILL_REVERT= (By.CSS_SELECTOR, "div[id='revertable']")
+    WILL_REVERT = (By.CSS_SELECTOR, "div[id='revertable']")
     DROP_HERE_REVERT_BOX = (By.CSS_SELECTOR, "div[id='revertableDropContainer'] div[id='droppable']")
 
-class DraggablePageLocators:
 
+class DraggablePageLocators:
     # Simple
     DRAG_ME_BOX = (By.CSS_SELECTOR, 'div[id="draggableExample-tabpane-simple"] div[id="dragBox"]')
 
@@ -71,7 +71,9 @@ class DraggablePageLocators:
 
     # Container Restricted
     CONTAINER_RESTRICTED_TAB = (By.CSS_SELECTOR, 'a[id="draggableExample-tab-containerRestriction"]')
-    CONTAINED_WITHIN_BOX = (By.CSS_SELECTOR, 'div[class="draggable ui-widget-content ui-draggable ui-draggable-handle"]')
+    CONTAINER = (By.CSS_SELECTOR, "div[id='containmentWrapper']")
+    CONTAINED_WITHIN_BOX = (
+        By.CSS_SELECTOR, 'div[class="draggable ui-widget-content ui-draggable ui-draggable-handle"]')
     BOX_WRAPPER = (By.CSS_SELECTOR, 'div[id="containmentWrapper"]')
     CONTAINED_WITHIN_PARENT = (By.CSS_SELECTOR, 'span[class="ui-widget-header ui-draggable ui-draggable-handle"]')
     PARENT_WRAPPER = (By.CSS_SELECTOR, 'div[class="draggable ui-widget-content m-3"]')
@@ -82,4 +84,3 @@ class DraggablePageLocators:
     CURSOR_STICK_TO_CENTER_BOX = (By.CSS_SELECTOR, 'div[id="cursorCenter"]')
     CURSOR_AT_TOP_LEFT_BOX = (By.CSS_SELECTOR, 'div[id="cursorTopLeft"]')
     CURSOR_IS_AT_BOTTOM_BOX = (By.CSS_SELECTOR, 'div[id="cursorBottom"]')
-
