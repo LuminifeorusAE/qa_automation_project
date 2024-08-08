@@ -93,11 +93,14 @@ class TestDraggablePage:
     def test_container_restricted_draggable(self, driver):
         draggable_page = DraggablePage(driver, "https://demoqa.com/dragabble")
         draggable_page.open()
+
         try:
             within_box_position = draggable_page.restricted_draggable()
-            assert within_box_position is not None and within_box_position.strip() != "", "The box was moved outside its boundaries, but no exception was raised."
+            if within_box_position is not None and within_box_position.strip() != "":
+                assert True, "The box was moved outside its boundaries, but no exception was raised."
+            else:
+                raise AssertionError('Box Position is not returned properly')
         except MoveTargetOutOfBoundsException:
             assert True, "The box is restricted and cannot be moved outside the container boundaries."
-    def test_cursor_style_droppable(self, driver):
-        draggable_page = DraggablePage(driver, "https://demoqa.com/dragabble")
-        draggable_page.open()
+
+

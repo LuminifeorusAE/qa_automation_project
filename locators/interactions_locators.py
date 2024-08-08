@@ -71,16 +71,6 @@ class DraggablePageLocators:
 
     # Container Restricted
     CONTAINER_RESTRICTED_TAB = (By.CSS_SELECTOR, 'a[id="draggableExample-tab-containerRestriction"]')
-    CONTAINER = (By.CSS_SELECTOR, "div[id='containmentWrapper']")
     CONTAINED_WITHIN_BOX = (
         By.CSS_SELECTOR, 'div[class="draggable ui-widget-content ui-draggable ui-draggable-handle"]')
     BOX_WRAPPER = (By.CSS_SELECTOR, 'div[id="containmentWrapper"]')
-    CONTAINED_WITHIN_PARENT = (By.CSS_SELECTOR, 'span[class="ui-widget-header ui-draggable ui-draggable-handle"]')
-    PARENT_WRAPPER = (By.CSS_SELECTOR, 'div[class="draggable ui-widget-content m-3"]')
-
-    # Cursor Style
-
-    CURSOR_STYLE_TAB = (By.CSS_SELECTOR, 'a[id="draggableExample-tab-cursorStyle"]')
-    CURSOR_STICK_TO_CENTER_BOX = (By.CSS_SELECTOR, 'div[id="cursorCenter"]')
-    CURSOR_AT_TOP_LEFT_BOX = (By.CSS_SELECTOR, 'div[id="cursorTopLeft"]')
-    CURSOR_IS_AT_BOTTOM_BOX = (By.CSS_SELECTOR, 'div[id="cursorBottom"]')

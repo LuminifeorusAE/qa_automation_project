@@ -1,8 +1,7 @@
 import random
 import re
 import time
-
-from selenium.common import MoveTargetOutOfBoundsException
+import pyautogui
 
 from locators.interactions_locators import SortablePageLocators, SelectablePageLocators, ResizablePageLocators, \
     DroppablePageLocators, DraggablePageLocators
