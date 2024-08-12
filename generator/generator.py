@@ -1,4 +1,5 @@
 import random
+from datetime import datetime, timedelta
 
 from faker import Faker
 from data.data import Person, Color, Date
@@ -36,14 +37,22 @@ def generated_color():
     )
 
 
+def generate_random_time():
+    start_time = datetime.strptime("00:00", "%H:%M")
+    end_time = datetime.strptime("23:45", "%H:%M")
+    delta = timedelta(minutes=15)
+    random_time = start_time + timedelta(minutes=random.randint(0, (end_time - start_time).seconds // 60 // 15) * 15)
+    return random_time.strftime("%H:%M")
+
+
 def generate_date():
     yield Date(
         year=faker.year(),
         month=faker.month_name(),
         day=faker.day_of_month(),
-        time="12:15",  # !!!create a method that will generate time randomly with 15 minute intervals!!!
-
+        time=generate_random_time()
     )
+
 # def denerate_subject(value=None):
 #     subjects = [
 #         {
