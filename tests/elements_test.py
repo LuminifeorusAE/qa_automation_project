@@ -201,10 +201,9 @@ class TestElements:
     class TestDynamicProperties:
 
         @allure.title('Check dynamic properties')
-        def test_test_dynamic_properties(self, driver):
+        def test_dynamic_properties(self, driver):
             dynamic_properties_page = DynamicPropertiesPage(driver, "https://demoqa.com/dynamic-properties")
             dynamic_properties_page.open()
-            time.sleep(5)  # fix method to work without time sleep
             color_before, color_after = dynamic_properties_page.check_button_color_change()
             assert color_before != color_after, "color button has not been change"
 
@@ -212,6 +211,7 @@ class TestElements:
         def test_enable_button(self, driver):
             dynamic_properties_page = DynamicPropertiesPage(driver, "https://demoqa.com/dynamic-properties")
             dynamic_properties_page.open()
+
             enable_button = dynamic_properties_page.check_enable_button()
             assert enable_button is True, "button is not enabled after five seconds"
 

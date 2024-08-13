@@ -3,6 +3,16 @@ from selenium.webdriver.support.ui import WebDriverWait as wait
 from selenium.webdriver.support import expected_conditions as EC
 
 
+def color_changed_condition(element, color_before):
+    """Condition to check if the color of the element has changed."""
+    return lambda driver: element.value_of_css_property('background-color') != color_before
+
+
+def color_changed_condition(element, color_before):
+    """Condition to check if the color of the element has changed."""
+    return lambda driver: element.value_of_css_property('background-color') != color_before
+
+
 class BasePage:
     def __init__(self, driver, url):
         self.driver = driver
@@ -12,10 +22,17 @@ class BasePage:
         """Open the page with the given URL."""
         self.driver.get(self.url)
 
+    def wait_for_element(self, condition, timeout=10):
+        """Wait for a specific condition to be met and return the result."""
+        return wait(self.driver, timeout).until(condition)
+
     def visible_element(self, locator, timeout=10):
         """Wait for an element to be visible and return it."""
         return wait(self.driver, timeout).until(EC.visibility_of_element_located(locator))
 
+    def color_changed_condition(self, element, color_before):
+        """Condition to check if the color of the element has changed."""
+        return lambda driver: element.value_of_css_property('color') != color_before
     def every_visible_element(self, locator, timeout=5):
         """Wait for all elements matching the locator to be visible and return them."""
         return wait(self.driver, timeout).until(EC.visibility_of_all_elements_located(locator))
@@ -38,7 +55,7 @@ class BasePage:
 
     def go_to_element(self, element):
         """Scroll the page to bring the element into view."""
-        self.driver.execute_script('arguments[0].scrollIntoView();', element)
+        self.driver.execute_script('arguments[0].scrollIntoView(true);', element)
 
     def action_double_click(self, element):
         """Perform a double click action on the element."""

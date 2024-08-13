@@ -1,8 +1,10 @@
 import base64
 import os
+import time
 
 import allure
 import requests
+from selenium.common import ElementClickInterceptedException
 
 from selenium.webdriver.common.by import By
 
@@ -19,19 +21,44 @@ class TextBoxPage(BasePage):
 
     @allure.step("Fill All Fields")
     def fill_all_fields(self):
+        """
+        Fill in all the text fields on the page and submit the form.
+
+        Returns:
+            tuple: A tuple containing the full name, email, current address, and permanent address
+        """
+        # Generate a new set of person information
         person_info = next(generated_person())
         full_name = person_info.full_name
         email = person_info.email
         current_address = person_info.current_address.replace('\n', ' ')
         permanent_address = person_info.permanent_address.replace('\n', ' ')
-        with allure.step('filling fields'):
-            self.visible_element(self.locators.FULL_NAME).send_keys(full_name)
-            self.visible_element(self.locators.EMAIL).send_keys(email)
-            self.visible_element(self.locators.CURRENT_ADDRESS).send_keys(current_address)
-            self.visible_element(self.locators.PERMANENT_ADDRESS).send_keys(permanent_address)
-        with allure.step('click submit button'):
-            self.visible_element(self.locators.SUBMIT).click()
 
+        with allure.step('Filling fields'):
+            # Fill in the full name field
+            self.visible_element(self.locators.FULL_NAME).send_keys(full_name)
+            # Fill in the email field
+            self.visible_element(self.locators.EMAIL).send_keys(email)
+            # Fill in the current address field
+            self.visible_element(self.locators.CURRENT_ADDRESS).send_keys(current_address)
+            # Fill in the permanent address field
+            self.visible_element(self.locators.PERMANENT_ADDRESS).send_keys(permanent_address)
+
+            # Locate the submit button
+            submit_button = self.visible_element(self.locators.SUBMIT)
+
+            # Scroll to the submit button to ensure it's in view
+            self.go_to_element(submit_button)
+
+            with allure.step('Click submit button'):
+                try:
+                    # Attempt to click the submit button
+                    submit_button.click()
+                except ElementClickInterceptedException:
+                    # If clicking fails, use JavaScript to click the button
+                    self.driver.execute_script("arguments[0].click();", submit_button)
+
+        # Return the filled information
         return full_name, email, current_address, permanent_address
 
     @allure.step("Check filled forms")
@@ -326,8 +353,11 @@ class DynamicPropertiesPage(BasePage):
 
     @allure.step('check button color change')
     def check_button_color_change(self):
-        color_button = self.element_present(self.locators.COLOR_CHANGE_BUTTON)
+        color_button = self.visible_element(self.locators.COLOR_CHANGE_BUTTON)
         color_button_before = color_button.value_of_css_property('color')
+        self.wait_for_element(
+            self.color_changed_condition(color_button, color_button_before)
+        )
         color_button_after = color_button.value_of_css_property('color')
         return color_button_before, color_button_after
 
