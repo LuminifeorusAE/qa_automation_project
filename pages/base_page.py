@@ -30,9 +30,6 @@ class BasePage:
         """Wait for an element to be visible and return it."""
         return wait(self.driver, timeout).until(EC.visibility_of_element_located(locator))
 
-    def color_changed_condition(self, element, color_before):
-        """Condition to check if the color of the element has changed."""
-        return lambda driver: element.value_of_css_property('color') != color_before
     def every_visible_element(self, locator, timeout=5):
         """Wait for all elements matching the locator to be visible and return them."""
         return wait(self.driver, timeout).until(EC.visibility_of_all_elements_located(locator))

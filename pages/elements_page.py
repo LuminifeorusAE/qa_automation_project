@@ -355,9 +355,7 @@ class DynamicPropertiesPage(BasePage):
     def check_button_color_change(self):
         color_button = self.visible_element(self.locators.COLOR_CHANGE_BUTTON)
         color_button_before = color_button.value_of_css_property('color')
-        self.wait_for_element(
-            self.color_changed_condition(color_button, color_button_before)
-        )
+        time.sleep(6)
         color_button_after = color_button.value_of_css_property('color')
         return color_button_before, color_button_after
 
