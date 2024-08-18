@@ -315,12 +315,12 @@ class LinksPage(BasePage):
 
     @allure.step('check bad request link')
     def check_bad_request_link(self, url):
-        request = requests.get(url)
-        self.element_present(self.locators.BAD_REQUEST_LINK).click()
-        if request.status_code == 200:
-            return request.status_code
-        else:
-            return None
+        response = requests.get(url)
+        status_code = response.status_code
+        bad_request_button = self.element_is_clickable(self.locators.BAD_REQUEST_LINK)
+        self.go_to_element(bad_request_button)
+        bad_request_button.click()
+        return status_code
 
 
 class DownloadAndUploadPage(BasePage):

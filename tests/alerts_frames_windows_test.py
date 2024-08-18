@@ -1,7 +1,4 @@
-import time
-
 import allure
-
 from pages.alerts_frames_windwos_page import BrowserWindowsPage, AlertsPage, FramesPage, NestedFramesPage, \
     ModalButtonPage
 
@@ -55,8 +52,8 @@ class TestAlertsFramesWindows:
                 frames_page.open()
                 result_frame_1 = frames_page.check_frame("frame1")
                 result_frame_2 = frames_page.check_frame("frame2")
-                assert result_frame_1 == "['This is a sample page', '500px', '350px']", " The frame does not exist"
-                assert result_frame_2 == "['This is a sample page', '100px', '100px']", " The frame does not exist"
+                assert result_frame_1 == ['This is a sample page', '500px', '350px'], " The frame does not exist"
+                assert result_frame_2 == ['This is a sample page', '100px', '100px'], " The frame does not exist"
 
         @allure.feature('Test Nested Frames')
         class TestNestedFrames:
@@ -70,11 +67,11 @@ class TestAlertsFramesWindows:
 
         @allure.feature('Test Modal Dialogs Page')
         class TestModalDialogsPage:
-            @allure.title('test modal dialogs')
+            @allure.title('Test modal dialogs')
             def test_modal_dialogs(self, driver):
                 modal_dialog = ModalButtonPage(driver, "https://demoqa.com/modal-dialogs")
                 modal_dialog.open()
                 small_modal_text, large_modal_text = modal_dialog.check_dialog_buttons()
                 assert len(small_modal_text) < len(
-                    large_modal_text), "Small modal text is not shorter than large modal text"
-                # add to the test title checkers
+                    large_modal_text), (f"Expected small modal text to be shorter than large modal text, but got "
+                                        f"{len(small_modal_text)} vs {len(large_modal_text)}")

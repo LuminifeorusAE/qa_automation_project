@@ -24,17 +24,22 @@ class SortablePage(BasePage):
         item_list = random.sample(self.every_visible_element(self.locators.LIST_PANEL_ITEM), k=2)
         select_item = item_list[0]
         replace_item = item_list[1]
+        self.go_to_element(select_item)
+        self.go_to_element(replace_item)
         self.action_drag_and_drop_to_element(select_item, replace_item)
         order_after = self.get_sortable_items(self.locators.LIST_PANEL_ITEM)
         return order_before, order_after
 
     @allure.step("test change grid order")
     def change_grid_order(self):
-        self.element_is_clickable(self.locators.TAB_GRID).click()
+        self.visible_element(self.locators.TAB_GRID).click()
+        self.go_to_element(self.visible_element(self.locators.GRID_PANEL_ITEM))
         order_before = self.get_sortable_items(self.locators.GRID_PANEL_ITEM)
         item_list = random.sample(self.every_visible_element(self.locators.GRID_PANEL_ITEM), k=2)
         select_item = item_list[0]
         replace_item = item_list[1]
+        self.go_to_element(select_item)
+        self.go_to_element(replace_item)
         self.action_drag_and_drop_to_element(select_item, replace_item)
         order_after = self.get_sortable_items(self.locators.GRID_PANEL_ITEM)
         return order_before, order_after

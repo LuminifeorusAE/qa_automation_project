@@ -1,16 +1,7 @@
+# base_page.py
 from selenium.webdriver import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait as wait
 from selenium.webdriver.support import expected_conditions as EC
-
-
-def color_changed_condition(element, color_before):
-    """Condition to check if the color of the element has changed."""
-    return lambda driver: element.value_of_css_property('background-color') != color_before
-
-
-def color_changed_condition(element, color_before):
-    """Condition to check if the color of the element has changed."""
-    return lambda driver: element.value_of_css_property('background-color') != color_before
 
 
 class BasePage:

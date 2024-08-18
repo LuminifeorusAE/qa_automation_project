@@ -1,5 +1,3 @@
-
-
 import allure
 
 from pages.widgets_test_page import AccordianPage, DatePickerPage, SliderPage, ProgressBarPage, TabsPage, \
@@ -96,7 +94,8 @@ class TestWidgets:
             use_tab, use_content = tabs_page.check_tabs('use')
             # more_tab, more_content = tabs_page.check_tabs('more')
             assert what_tab == 'What' and what_content != 0, "the tab 'what' was not pressed or the text is missing"
-            assert origin_tab == 'Origin' and origin_content != 0, 'the tab "origin" was not pressed or the text is missing'
+            assert origin_tab == 'Origin' and origin_content != 0, ('the tab "origin" was not pressed or the text is '
+                                                                    'missing')
             assert use_tab == 'Use' and use_content != 0, 'the tab "use" was not pressed or the text is missing'
             # assert more_tab == 'More' and more_content != 0,'the tab "more" was not pressed or the text is missing'
 
@@ -121,8 +120,14 @@ class TestWidgets:
             main_item_page = MenuItemPage(driver, "https://demoqa.com/menu#")
             main_item_page.open()
             data = main_item_page.check_menu_items()
-            assert data == ("['Main Item 1', 'Main Item 2', 'Sub Item', 'Sub Item', 'SUB SUB LIST »', 'Sub Sub Item 1',"
-                            " 'Sub Sub Item 2', 'Main Item 3']"), "menu items do not exist or have not been selected"
+            assert data == ['Main Item 1',
+                            'Main Item 2',
+                            'Sub Item',
+                            'Sub Item',
+                            'SUB SUB LIST »',
+                            'Sub Sub Item 1',
+                            'Sub Sub Item 2',
+                            'Main Item 3'], "menu items do not exist or have not been selected"
 
     @allure.feature('Test Select Menu Page')
     class TestSelectMenuPage:

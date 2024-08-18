@@ -289,7 +289,7 @@ class SelectMenuPage(BasePage):
         option_input.send_keys(Keys.ENTER)
         return select_option
 
-    @allure.step("check ald style menu")
+    @allure.step("check old style menu")
     def check_old_style_menu(self):
         color_option = self.element_is_clickable(self.locators.SELECT_OLD_STYLE_DROP)
         color_option.click()
