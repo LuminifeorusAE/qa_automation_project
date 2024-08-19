@@ -44,7 +44,7 @@ class FormPage(BasePage):
 
         # Fill in the subject with 'Maths'
         self.visible_element(self.locators.SUBJECT).send_keys('Maths')
-        # Modify this to choose a different subject each time
+        ## Modify this to choose a different subject each time
         self.visible_element(self.locators.SUBJECT).send_keys(Keys.RETURN)
 
         # Scroll to hobbies section and select hobbies
