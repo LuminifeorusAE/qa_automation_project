@@ -117,8 +117,6 @@ class TestElements:
             web_table_page.open()
             new_person = web_table_page.add_new_person()
             table_result = web_table_page.check_new_added_person()
-            print(new_person)
-            print(table_result)
             assert new_person in table_result
 
         @allure.title('Check human search in table')
@@ -165,8 +163,6 @@ class TestElements:
             web_table_page.search_person_by_keyword(lastname)
             age = web_table_page.update_person_info()
             row = web_table_page.check_found_person()
-            print(age)
-            print(row)
             assert age in row, "The person's information has not been updated"
 
         @allure.title('Checking to remove a person from the table')
@@ -233,7 +229,7 @@ class TestElements:
             buttons_page.open()
             double = buttons_page.button_clicks('double')
             right = buttons_page.button_clicks('right')
-            click = buttons_page.button_clicks('click')
+            click = buttons_page.button_clicks('dynamic')
 
             # Verify that the output texts match the expected results
             assert double == "You have done a double click", "The double click has not been executed"
