@@ -101,6 +101,7 @@ class DatePickerPage(BasePage):
         date = next(generate_date())
         input_date = self.visible_element(self.locators.DATE_INPUT)
         value_date_before = input_date.get_attribute('value')
+        self.go_to_element(input_date)
         input_date.click()
         self.set_date_by_text(self.locators.DATE_SELECT_MONTH, date.month)
         self.set_date_by_text(self.locators.DATE_SELECT_YEAR, date.year)
@@ -159,7 +160,7 @@ class ProgressBarPage(BasePage):
         value_before = self.not_visible_elements(self.locators.PROGRESS_VALUE).get_attribute('aria-valuenow')
         progress_bar_button = self.element_is_clickable(self.locators.START_BUTTON)
         progress_bar_button.click()
-        time.sleep(random.randint(1, 15))
+        time.sleep(random.randint(1, 10))
         progress_bar_button.click()
         value_after = self.element_present(self.locators.PROGRESS_VALUE).text
         return value_before, value_after
