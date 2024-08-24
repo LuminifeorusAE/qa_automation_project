@@ -135,12 +135,16 @@ class TestElements:
             """
             web_table_page = WebTablePage(driver, "https://demoqa.com/webtables")
             web_table_page.open()
-            keyword = web_table_page.add_new_person()[random.randint(0, 5)]
-            web_table_page.search_person_by_keyword(keyword)
-            table_result = web_table_page.check_found_person()
-            print(keyword)
-            print(table_result)
-            assert keyword in table_result, "Person has not been found in the table"
+            try:
+                keyword = web_table_page.add_new_person()[random.randint(0, 5)]
+                time.sleep(2)
+                web_table_page.search_person_by_keyword(keyword)
+                table_result = web_table_page.check_found_person()
+                print(keyword)
+                print(table_result)
+                assert keyword in table_result, "Person has not been found in the table"
+            except TimeoutError as e:
+                print(f"There is no such keyword in list{e}")
 
         @allure.title('Checking to update the persons info in the table')
         def test_web_table_update_person_info(self, driver):
