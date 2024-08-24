@@ -256,7 +256,7 @@ class WebTablePage(BasePage):
         Returns:
             str: The text indicating that no rows were found.
         """
-        return self.element_present(self.locators.NO_ROWS_FOUND_BUTTON).text
+        return self.element_present(self.locators.NO_ROWS_FOUND_TEXT).text
 
     @allure.step('Select row')
     def select_row(self):
