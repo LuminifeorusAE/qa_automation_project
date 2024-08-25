@@ -176,20 +176,27 @@ class WebTablePage(BasePage):
         Returns:
             list: A list containing details of the newly added person.
         """
-        person_info = next(generated_person())
-        first_name, last_name = person_info.first_name, person_info.last_name
-        email, age, salary, department = person_info.email, person_info.age, person_info.salary, person_info.department
+        count = 1
+        while count != 0:
+            person_info = next(generated_person())
+            first_name = person_info.first_name
+            last_name = person_info.last_name
+            email = person_info.email
+            age = person_info.age
+            salary = person_info.salary
+            department = person_info.department
 
-        self.visible_element(self.locators.ADD_BUTTON).click()
-        self.visible_element(self.locators.FIRST_NAME_INPUT).send_keys(first_name)
-        self.visible_element(self.locators.LASTNAME_INPUT).send_keys(last_name)
-        self.visible_element(self.locators.EMAIL_INPUT).send_keys(email)
-        self.visible_element(self.locators.AGE_INPUT).send_keys(age)
-        self.visible_element(self.locators.SALARY_INPUT).send_keys(salary)
-        self.visible_element(self.locators.DEPARTMENT_INPUT).send_keys(department)
-        self.visible_element(self.locators.SUBMIT_BUTTON).click()
+            self.visible_element(self.locators.ADD_BUTTON).click()
+            self.visible_element(self.locators.FIRST_NAME_INPUT).send_keys(first_name)
+            self.visible_element(self.locators.LASTNAME_INPUT).send_keys(last_name)
+            self.visible_element(self.locators.EMAIL_INPUT).send_keys(email)
+            self.visible_element(self.locators.AGE_INPUT).send_keys(age)
+            self.visible_element(self.locators.SALARY_INPUT).send_keys(salary)
+            self.visible_element(self.locators.DEPARTMENT_INPUT).send_keys(department)
+            self.visible_element(self.locators.SUBMIT_BUTTON).click()
+            count -= 1
 
-        return [first_name, last_name, str(age), email, str(salary), department]
+            return [first_name, last_name, str(age), email, str(salary), department]
 
     @allure.step('Check new added person')
     def check_new_added_person(self):
@@ -513,24 +520,38 @@ class DownloadAndUploadPage(BasePage):
         text = self.element_present(self.locators.UPLOADED_RESULT).text
         return file_name.split("\\")[-1], text.split("\\")[-1]
 
-    @allure.step('Check download file')
     def download_file(self):
         """
-        Downloads a file from the page and verifies if it exists.
+        Downloads a file from a base64 data URI and verifies if it exists.
 
         Returns:
             bool: True if the file exists and is successfully downloaded, otherwise False.
         """
         link = self.element_present(self.locators.DOWNLOAD_FILE).get_attribute('href')
-        link_b = base64.b64decode(link)
-        path_name_file = rf'C:\Users\David\PycharmProjects\qa_automation_project\filetest{random.randint(0, 999)}.jpeg'
-        with open(path_name_file, 'wb+') as file:
-            offset = link_b.find(b'\xff\xd8')  # Find the JPEG header
-            file.write(link_b[offset:])
+
+        # Check if the link is a base64 data URI
+        if link.startswith("data:image/jpeg;base64,"):
+            # Strip the base64 prefix and decode the image
+            base64_data = link.split(",")[1]
+            image_data = base64.b64decode(base64_data)
+
+            # Create a random file name to save the image
+            path_name_file = rf'C:\Users\David\PycharmProjects\qa_automation_project\filetest{random.randint(0, 999)}.jpeg'
+
+            # Write the decoded image to a file
+            with open(path_name_file, 'wb') as file:
+                file.write(image_data)
+
+            # Verify the file exists
             check_file = os.path.exists(path_name_file)
-            file.close()
+
+            # Cleanup after the check
             os.remove(path_name_file)
-        return check_file
+
+            return check_file
+        else:
+            # Handle non-base64 links (e.g., regular HTTP URLs) if needed
+            raise ValueError("Unexpected URL schema, expected base64 data URI.")
 
 
 class DynamicPropertiesPage(BasePage):

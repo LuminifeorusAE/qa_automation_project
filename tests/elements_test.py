@@ -313,8 +313,9 @@ class TestElements:
             """
             upload_download_page = DownloadAndUploadPage(driver, 'https://demoqa.com/upload-download')
             upload_download_page.open()
-            response_code = upload_download_page.download_file()
-            assert response_code == 200, "The file has not been downloaded"
+            file_path = upload_download_page.download_file()
+            assert file_path is not None, "The file has not been downloaded"
+            assert file_path is True, f"Downloaded file location: {file_path}"
 
     @allure.feature('Dynamic Properties')
     class TestDynamicPropertiesPage:
