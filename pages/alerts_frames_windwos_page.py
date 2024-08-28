@@ -77,9 +77,9 @@ class AlertsPage(BasePage):
     @allure.step("Test check confirm alert")
     def check_confirm_alert(self):
         """
-        Trigger a confirm alert and retrieve its result.
+        Trigger a confirmation alert and retrieve its result.
 
-        - Clicks a button to show a confirm alert.
+        - Clicks a button to show a confirmation alert.
         - Accepts the alert and retrieves the result text.
 
         Returns:

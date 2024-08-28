@@ -81,7 +81,7 @@ class TestAlertsFramesWindows:
                 driver: WebDriver instance used for testing.
 
             Asserts:
-                - The confirm box text is "You selected Ok".
+                - The confirmation box text is "You selected Ok".
             """
             alerts_page = AlertsPage(driver, "https://demoqa.com/alerts")
             alerts_page.open()
@@ -180,4 +180,3 @@ class TestAlertsFramesWindows:
                                             f"{len(small_modal_text)} vs {len(large_modal_text)}")
                 except AssertionError as e:
                     print(f"Test Passed but error occurred:{e}")
-

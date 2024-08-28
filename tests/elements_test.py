@@ -119,7 +119,6 @@ class TestElements:
                 web_table_page = WebTablePage(driver, "https://demoqa.com/webtables")
                 web_table_page.open()
                 new_person = web_table_page.add_new_person()
-
                 table_result = web_table_page.check_new_added_person()
                 assert new_person in table_result
             except AssertionError as e:
