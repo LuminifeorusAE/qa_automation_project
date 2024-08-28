@@ -176,6 +176,7 @@ class WebTablePage(BasePage):
         Returns:
             list: A list containing details of the newly added person.
         """
+
         count = 1
         while count != 0:
             person_info = next(generated_person())
@@ -194,6 +195,7 @@ class WebTablePage(BasePage):
             self.visible_element(self.locators.SALARY_INPUT).send_keys(salary)
             self.visible_element(self.locators.DEPARTMENT_INPUT).send_keys(department)
             self.visible_element(self.locators.SUBMIT_BUTTON).click()
+            time.sleep(2)
             count -= 1
 
             return [first_name, last_name, str(age), email, str(salary), department]
