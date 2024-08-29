@@ -81,3 +81,16 @@ class Date:
     month: str = None  # Month of the date
     year: str = None  # Year of the date
     time: str = None  # Time associated with the date
+
+
+@dataclass
+class Subject:
+    """
+    A data class to represent subject information.
+
+    Attributes:
+    ----------
+    subject_name : str
+        The name of the subject.
+    """
+    subject_name: str = None

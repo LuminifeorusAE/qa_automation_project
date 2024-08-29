@@ -1,7 +1,8 @@
+#generator.py
 import random
 from datetime import datetime, timedelta
 from faker import Faker
-from data.data import Person, Color, Date
+from data.data import Person, Color, Date, Subject
 
 # Initialize a Faker instance to generate fake data like names, addresses, etc.
 faker = Faker()
@@ -70,6 +71,20 @@ def generated_color():
     )
 
 
+def generate_subject():
+    """
+    Generator function to yield a Subject object with a randomly selected subject.
+    """
+    subjects = ["Hindi", "English", "Maths", "Physics", "Chemistry", "Biology",
+                "Computer Science", "Commerce", "Accounting", "Economics", "Arts",
+                "Social Studies", "History", "Civics"]
+
+    # Randomly select one subject from the list
+    selected_subject = random.choice(subjects)
+
+    yield Subject(subject_name=selected_subject)
+
+
 def generate_random_time():
     """
     Function to generate a random time between 00:00 and 23:45 in 15-minute intervals.
@@ -101,49 +116,3 @@ def generate_date():
         day=faker.day_of_month(),  # Generate a random day of the month
         time=generate_random_time()  # Generate a random time in 15-minute intervals
     )
-#
-# def generate_subject(value=None):
-#     subjects = [
-#         {
-#         value: 1,
-#         subject: "Hindi"
-#         value: 2,
-#         subject: "English"
-#     , {
-#         value: 3,
-#         subject: "Maths"
-#     }, {
-#         value: 4,
-#         subject: "Physics"
-#     }, {
-#         value: 5,
-#         subject: "Chemistry"
-#     }, {
-#         value: 6,
-#         subject: "Biology"
-#     }, {
-#         value: 7,
-#         subject: "Computer Science"
-#     }, {
-#         value: 8,
-#         subject: "Commerce"
-#     }, {
-#         value: 9,
-#         subject: "Accounting"
-#     }, {
-#         value: 10,
-#         subject: "Economics"
-#     }, {
-#         value: 11,
-#         subject: "Arts"
-#     }, {
-#         value: 12,
-#         subject: "Social Studies"
-#     }, {
-#         value: 13,
-#         subject: "History"
-#     }, {
-#         value: 14,
-#         subject: "Civics"
-#     }
-#     ]

@@ -1,8 +1,10 @@
 import os
+import time
+
 import allure
 from selenium.webdriver import Keys
 
-from generator.generator import generated_person, generated_file
+from generator.generator import generated_person, generated_file, generate_subject
 from locators.form_page_locators import FormPageLocators
 from pages.base_page import BasePage
 
@@ -25,6 +27,7 @@ class FormPage(BasePage):
             person: The generated person object used to fill the form.
         """
         person = next(generated_person())
+        subject = next(generate_subject())
         file_name, path = generated_file()
 
         # Fill in the first name
@@ -38,12 +41,12 @@ class FormPage(BasePage):
 
         # Click on the gender radio button
         self.element_is_clickable(self.locators.GENDER).click()  # review
-
+        time.sleep(3)
         # Fill in the mobile number
         self.visible_element(self.locators.MOBILE_NUMBER).send_keys(person.mobile_number)
 
         # Fill in the subject with 'Maths'
-        self.visible_element(self.locators.SUBJECT).send_keys('Maths')
+        self.visible_element(self.locators.SUBJECT).send_keys(subject.subject_name)
         # Modify this to choose a different subject each time
         self.visible_element(self.locators.SUBJECT).send_keys(Keys.RETURN)
 
