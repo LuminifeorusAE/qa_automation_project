@@ -67,11 +67,16 @@ class AlertsPage(BasePage):
         Returns:
             str: The text of the alert.
         """
+        # Click the button that triggers an alert after 5 seconds
         self.element_is_clickable(self.locators.ALERT_AFTER_5_SECS_BUTTON).click()
-        time.sleep(6)
-        alert_window = self.driver.switch_to.alert
+
+        # Wait for the alert to be present
+        alert_window = self.alert_is_present()
+
+        # Retrieve the alert text and accept it
         alert_text = alert_window.text
         alert_window.accept()
+
         return alert_text
 
     @allure.step("Test check confirm alert")

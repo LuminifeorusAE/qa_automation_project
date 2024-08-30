@@ -8,6 +8,7 @@ class BasePage:
     """
     Base class for page object models, containing reusable methods for interacting with web elements.
     """
+
     def __init__(self, driver, url):
         self.driver = driver
         self.url = url
@@ -67,6 +68,18 @@ class BasePage:
             The WebElement if present.
         """
         return wait(self.driver, timeout).until(EC.presence_of_element_located(locator))
+
+    def alert_is_present(self, timeout=10):
+        """
+        Wait for an alert to be present within the specified timeout.
+
+        Args:
+            timeout (int): The number of seconds to wait for the alert (default is 10 seconds).
+
+        Returns:
+           Alert: The alert object if it appears within the timeout.
+        """
+        return wait(self.driver, timeout).until(EC.alert_is_present())
 
     def elements_are_present(self, locator, timeout=5):
         """
