@@ -32,10 +32,10 @@ class TestAlertsFramesWindows:
             """
             new_tab_page = BrowserWindowsPage(driver, "https://demoqa.com/browser-windows")
             new_tab_page.open()
-            text_result_tab, text_result_window = new_tab_page.check_new_tab_and_window()
+            text_result_tab, text_result_window = new_tab_page.check_new_tabs_and_windows()
 
-            assert text_result_tab == "This is a sample page"
-            assert text_result_window == "This is a sample page"
+            assert text_result_tab == "This is a sample page", "Text from new tab is incorrect"
+            assert text_result_window == "This is a sample page", "Text from new window is incorrect"
 
         @allure.title('test alert button click')
         def test_alert_button_click(self, driver):
@@ -126,8 +126,10 @@ class TestAlertsFramesWindows:
                 frames_page.open()
                 result_frame_1 = frames_page.check_frame("frame1")
                 result_frame_2 = frames_page.check_frame("frame2")
-                assert result_frame_1 == ['This is a sample page', '500px', '350px'], " The frame does not exist"
-                assert result_frame_2 == ['This is a sample page', '100px', '100px'], " The frame does not exist"
+                assert result_frame_1 == ['This is a sample page', '500px', '350px'], \
+                    "Frame 1 content or dimensions are incorrect"
+                assert result_frame_2 == ['This is a sample page', '100px', '100px'], \
+                    "Frame 2 content or dimensions are incorrect"
 
         @allure.feature('Test Nested Frames')
         class TestNestedFrames:

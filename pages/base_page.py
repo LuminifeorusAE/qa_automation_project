@@ -30,6 +30,18 @@ class BasePage:
         """
         return wait(self.driver, timeout).until(condition)
 
+    def handle_alert(self):
+        """
+        Handles the alert by switching to it, capturing the text, and accepting it.
+
+        Returns:
+            str: The text of the alert.
+        """
+        alert_window = self.driver.switch_to.alert
+        alert_text = alert_window.text
+        alert_window.accept()
+        return alert_text
+
     def visible_element(self, locator, timeout=10):
         """
         Wait for an element to be visible and return it.
