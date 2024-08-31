@@ -35,7 +35,7 @@ class BasePage:
         Handles the alert by switching to it, capturing the text, and accepting it.
 
         Returns:
-            str: The text of the alert.
+            str: The text of the alert window.
         """
         alert_window = self.driver.switch_to.alert
         alert_text = alert_window.text

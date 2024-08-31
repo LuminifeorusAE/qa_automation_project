@@ -45,20 +45,60 @@ class BrowserWindowsPage(BasePage):
 class AlertsPage(BasePage):
     locators = AlertsPageLocators()
 
-    @allure.step("Test click button to alert")
+    @allure.step("Click button to display alert")
     def click_button_to_alert(self):
+        """
+        Clicks a button that triggers an alert box.
+
+        This method performs the following actions:
+        - Clicks the button identified by the locator `ALERT_CLICK_BUTTON` to display an alert.
+        - Handles the alert and returns its text.
+
+        Returns:
+            str: The text of the alert that appears.
+
+        Raises:
+            WebDriverException: If the element is not clickable or the alert cannot be handled.
+        """
         self.element_is_clickable(self.locators.ALERT_CLICK_BUTTON).click()
         return self.handle_alert()
 
-    @allure.step("Test click button to alert appearing in 5 seconds")
+    @allure.step("Click button to display alert after 5 seconds")
     def click_button_to_alert_appear_in_5_sec(self):
+        """
+        Clicks a button that triggers an alert box to appear after 5 seconds.
+
+        This method performs the following actions:
+        - Clicks the button identified by the locator `ALERT_AFTER_5_SECS_BUTTON` to initiate an alert.
+        - Waits for the alert to appear, handles it, and returns its text.
+
+        Returns:
+            str: The text of the alert that appears after 5 seconds.
+
+        Raises:
+            WebDriverException: If the element is not clickable, the alert does not appear, or the alert cannot be handled.
+        """
         self.element_is_clickable(self.locators.ALERT_AFTER_5_SECS_BUTTON).click()
         return self.handle_alert()
 
-    @allure.step("Test check confirm alert")
+    @allure.step("Click button to display confirm alert")
     def check_confirm_alert(self):
+        """
+        Clicks a button that triggers a confirmation alert box.
+
+        This method performs the following actions:
+        - Clicks the button identified by the locator `CONFIRM_BOX_ALERT_BUTTON` to display a confirmation alert.
+        - Handles the confirmation alert and returns its text.
+
+        Returns:
+            str: The text of the confirmation alert that appears.
+
+        Raises:
+            WebDriverException: If the element is not clickable, the confirmation alert does not appear, or the alert cannot be handled.
+        """
         self.element_is_clickable(self.locators.CONFIRM_BOX_ALERT_BUTTON).click()
         return self.handle_alert()
+
 
     @allure.step("Check prompt box input")
     def check_prompt_box_input(self):

@@ -114,13 +114,6 @@ class TestAlertsFramesWindows:
             def test_frame(self, driver):
                 """
                 Test that frames can be located and their content is as expected.
-
-                Args:
-                    driver: WebDriver instance used for testing.
-
-                Asserts:
-                    - Frame1 contains the correct content and dimensions.
-                    - Frame2 contains the correct content and dimensions.
                 """
                 frames_page = FramesPage(driver, "https://demoqa.com/frames")
                 frames_page.open()
