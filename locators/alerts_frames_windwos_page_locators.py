@@ -32,7 +32,7 @@ class AlertsPageLocators:
     CONFIRM_BOX_ALERT_BUTTON = (By.CSS_SELECTOR, "button[id='confirmButton']")
     CONFIRM_BOX_ALERT_RESULT = (By.CSS_SELECTOR, "span[id='confirmResult']")
     NAME_INPUT_ALERT_BUTTON = (By.CSS_SELECTOR, "button[id='promtButton']")
-    NAME_INPUT_ALERT_BUTTON_RESULT = (By.CSS_SELECTOR, "span[id='confirmResult']")
+    NAME_INPUT_ALERT_BUTTON_RESULT = (By.CSS_SELECTOR, "span[id='promptResult']")
 
 
 class FramesPageLocators:

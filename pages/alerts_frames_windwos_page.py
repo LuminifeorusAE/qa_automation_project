@@ -116,11 +116,11 @@ class AlertsPage(BasePage):
         Returns:
             tuple: A tuple containing the input text and the result text.
         """
-        text = f"David{random.randint(0, 999)}"
-        self.element_is_clickable(self.locators.NAME_INPUT_ALERT_BUTTON).click()
-        input_box = self.driver.switch_to.alert
-        input_box.send_keys(text)
-        input_box.accept()
+        text = f"david{random.randint(0, 999)}"
+        self.visible_element(self.locators.NAME_INPUT_ALERT_BUTTON).click()
+        alert_window = self.driver.switch_to.alert
+        alert_window.send_keys(text)
+        alert_window.accept()
         text_result = self.element_present(self.locators.NAME_INPUT_ALERT_BUTTON_RESULT).text
         return text, text_result
 
