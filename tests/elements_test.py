@@ -3,6 +3,7 @@ import time
 import random
 
 import allure
+import pytest
 from selenium.common import TimeoutException
 
 from pages.elements_page import TextBoxPage, CheckBoxPage, RadioButtonPage, WebTablePage, ButtonsPage, LinksPage, \
@@ -98,7 +99,7 @@ class TestElements:
                 assert output_impressive == 'Impressive', "'Impressive' button has not been selected"
                 assert output_no == 'No', "'No' button has not been selected"
             except AssertionError as e:
-                print("Button is not active", e)
+                pytest.fail(f"Test failed due to {e}")
 
     @allure.feature('WebTable')
     class TestWebTable:
@@ -120,6 +121,8 @@ class TestElements:
                 web_table_page.open()
                 new_person = web_table_page.add_new_person()
                 table_result = web_table_page.check_new_added_person()
+                assert new_person in table_result, f"Expected person {new_person} not found in the table."
+
                 assert new_person in table_result
             except AssertionError as e:
                 print(f"Test Passed but error occurred:{e}")
@@ -146,7 +149,7 @@ class TestElements:
                 table_result = web_table_page.check_found_person()
                 assert keyword in table_result, "Person has not been found in the table"
             except TimeoutException as e:
-                print(f"There is no such keyword in list{e}")
+                pytest.fail(f"Person not found in the table: {e}")
 
         @allure.title('Checking to update the persons info in the table')
         def test_web_table_update_person_info(self, driver):
@@ -241,43 +244,153 @@ class TestElements:
             assert right == "You have done a right click", "The right click has not been executed"
             assert click == "You have done a dynamic click", "The dynamic click has not been executed"
 
-    @allure.feature('LinksPage')
+    @allure.suite('Links')
     class TestLinksPage:
-        @allure.title('Checking simple link')
-        def test_check_simple_link(self, driver):
+        @allure.title('Check simple link in new tab')
+        def test_check_simple_link_in_new_tab(self, driver):
             """
-            Test case to check the functionality of a simple link on the links page.
+                Test case to check the functionality of a simple link by opening it in a new tab.
 
-            Steps:
-            1. Navigate to the links page.
-            2. Click on a simple link.
-            3. Verify that the link opens the correct URL.
+                Steps:
+                1. Navigate to the links page.
+                2. Click on the simple link and open it in a new tab.
+                3. Verify that the URL matches the expected URL and status code.
 
-            Asserts:
-            - The URL after clicking the link matches the expected link URL.
-            """
+                Asserts:
+                - The URL after clicking the link matches the expected URL.
+                """
             links_page = LinksPage(driver, 'https://demoqa.com/links')
             links_page.open()
-            href_link, current_url = links_page.check_new_tab_simple_link()
-            assert href_link == current_url, "The link is broken or the URL is incorrect"
+            link_href, current_url = links_page.check_new_tab_simple_link()
+            assert link_href == current_url, "The simple link URL is incorrect or the link is broken"
 
-        @allure.title('Checking a broken link')
-        def test_broken_link(self, driver):
+        @allure.title('Check dynamic link in new tab')
+        def test_check_dynamic_link_in_new_tab(self, driver):
             """
-            Test case to check the functionality of a broken link on the links page.
+                Test case to check the functionality of a dynamic link by opening it in a new tab.
 
-            Steps:
-            1. Navigate to the links page.
-            2. Click on a broken link.
-            3. Verify that the link displays a 404 status code.
+                Steps:
+                1. Navigate to the links page.
+                2. Click on the dynamic link and open it in a new tab.
+                3. Verify that the URL matches the expected URL and status code.
 
-            Asserts:
-            - The status code for the broken link is 404.
-            """
+                Asserts:
+                - The URL after clicking the link matches the expected URL.
+                """
             links_page = LinksPage(driver, 'https://demoqa.com/links')
             links_page.open()
-            response_code = links_page.check_bad_request_link('https://demoqa.com/bad-request')
-            assert response_code == 400, "The link is not broken or the status code is incorrect"
+            link_href, current_url = links_page.check_new_tab_dynamic_link()
+            assert link_href == current_url, "The dynamic link URL is incorrect or the link is broken"
+
+        @allure.feature('Created Link')
+        class TestCreatedLink:
+            @allure.title('Check created link status')
+            def test_check_created_link(self, driver):
+                """
+                Test case to check the status code of a created link.
+
+                Steps:
+                1. Navigate to the links page.
+                2. Check the status code of the created link.
+                3. Verify that the status code matches the expected status code (201).
+
+                Asserts:
+                - The status code for the created link is 201.
+                """
+                links_page = LinksPage(driver, 'https://demoqa.com/links')
+                links_page.open()
+                status_code = links_page.check_created_link('https://demoqa.com/created')
+                assert status_code == 201, "The created link status code is incorrect"
+
+            @allure.title('Check no content link status')
+            def test_check_no_content_link(self, driver):
+                """
+                Test case to check the status code of a no-content link.
+
+                Steps:
+                1. Navigate to the links page.
+                2. Check the status code of the no-content link.
+                3. Verify that the status code matches the expected status code (204).
+
+                Asserts:
+                - The status code for the no-content link is 204.
+                """
+                links_page = LinksPage(driver, 'https://demoqa.com/links')
+                links_page.open()
+                status_code = links_page.check_no_content_link('https://demoqa.com/no-content')
+                assert status_code == 204, "The no-content link status code is incorrect"
+
+            @allure.title('Check moved link status')
+            def test_check_moved_link(self, driver):
+                """
+                Test case to check the status code of a moved link.
+
+                Steps:
+                1. Navigate to the links page.
+                2. Check the status code of the moved link.
+                3. Verify that the status code matches the expected status code (301).
+
+                Asserts:
+                - The status code for the moved link is 301.
+                """
+                links_page = LinksPage(driver, 'https://demoqa.com/links')
+                links_page.open()
+                status_code = links_page.check_moved_link('https://demoqa.com/moved')
+                assert status_code == 301, "The moved link status code is incorrect"
+
+            @allure.title('Check forbidden link status')
+            def test_check_forbidden_link(self, driver):
+                """
+                Test case to check the status code of a forbidden link.
+
+                Steps:
+                1. Navigate to the links page.
+                2. Check the status code of the forbidden link.
+                3. Verify that the status code matches the expected status code (403).
+
+                Asserts:
+                - The status code for the forbidden link is 403.
+                """
+                links_page = LinksPage(driver, 'https://demoqa.com/links')
+                links_page.open()
+                status_code = links_page.check_forbidden_link('https://demoqa.com/forbidden')
+                assert status_code == 403, "The forbidden link status code is incorrect"
+
+            @allure.title('Check not found link status')
+            def test_check_not_found_link(self, driver):
+                """
+                Test case to check the status code of a not-found link.
+
+                Steps:
+                1. Navigate to the links page.
+                2. Check the status code of the not-found link.
+                3. Verify that the status code matches the expected status code (404).
+
+                Asserts:
+                - The status code for the not-found link is 404.
+                """
+                links_page = LinksPage(driver, 'https://demoqa.com/links')
+                links_page.open()
+                status_code = links_page.check_not_found_link('https://demoqa.com/not-found')
+                assert status_code == 404, "The not-found link status code is incorrect"
+
+            @allure.title('Check bad request link status')
+            def test_check_bad_request_link(self, driver):
+                """
+                Test case to check the status code of a bad-request link.
+
+                Steps:
+                1. Navigate to the links page.
+                2. Check the status code of the bad-request link.
+                3. Verify that the status code matches the expected status code (400).
+
+                Asserts:
+                - The status code for the bad-request link is 400.
+                """
+                links_page = LinksPage(driver, 'https://demoqa.com/links')
+                links_page.open()
+                status_code = links_page.check_bad_request_link('https://demoqa.com/bad-request')
+                assert status_code == 400, "The bad request link status code is incorrect"
 
     @allure.feature('Upload and Download')
     class TestDownloadAndUpload:
@@ -315,8 +428,7 @@ class TestElements:
             upload_download_page = DownloadAndUploadPage(driver, 'https://demoqa.com/upload-download')
             upload_download_page.open()
             file_path = upload_download_page.download_file()
-            assert file_path is not None, "The file has not been downloaded"
-            assert file_path is True, f"Downloaded file location: {file_path}"
+            assert file_path, "The file has not been downloaded successfully"
 
     @allure.feature('Dynamic Properties')
     class TestDynamicPropertiesPage:

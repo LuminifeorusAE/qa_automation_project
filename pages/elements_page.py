@@ -1,4 +1,3 @@
-import base64
 import os
 import time
 
@@ -305,27 +304,24 @@ class ButtonsPage(BasePage):
     locators = ButtonsPageLocators()
 
     @allure.step('Check button clicks')
-    def button_clicks(self, type_click):
+    def button_clicks(self, click_type, success_locator):
         """
         Clicks a button based on the specified click type (double, right, or dynamic).
 
         Args:
-            type_click (str): The type of click to perform (double, right, or dynamic).
+            success_locator: Locator for the success message element.
+            click_type (str): The type of click to perform (double, right, or dynamic).
 
         Returns:
             str: The success message for the click action.
         """
-        if type_click == "double":
+        if click_type == "double":
             self.action_double_click(self.visible_element(self.locators.DOUBLE_CLICK_BUTTON))
-            return self.check_clicked_buttons(self.locators.DOUBLE_CLICK_BUTTON_SUCCESS)
-
-        if type_click == "right":
+        elif click_type == "right":
             self.action_right_click(self.visible_element(self.locators.RIGHT_CLICK_BUTTON))
-            return self.check_clicked_buttons(self.locators.RIGHT_CLICK_BUTTON_SUCCESS)
-
-        if type_click == "dynamic":
+        elif click_type == "dynamic":
             self.visible_element(self.locators.CLICK_BUTTON).click()
-            return self.check_clicked_buttons(self.locators.CLICK_BUTTON_SUCCESS)
+        return self.check_clicked_buttons(success_locator)
 
     @allure.step('Check clicked buttons')
     def check_clicked_buttons(self, locator):
@@ -348,157 +344,111 @@ class LinksPage(BasePage):
 
     locators = LinksPageLocators()
 
-    @allure.step('Check new tab simple link')
-    def check_new_tab_simple_link(self):
+    def get_link_status(self, link_element):
         """
-        Opens a new tab and navigates to a simple link to verify its URL and status code.
+        Gets the status code for a given link element.
+
+        Args:
+            link_element (WebElement): The web element representing the link.
+
+        Returns:
+            tuple: A tuple containing the link's href and the HTTP status code.
+        """
+        link_href = link_element.get_attribute('href')
+        response = requests.get(link_href)
+        status_code = response.status_code
+        return link_href, status_code
+
+    def open_link_in_new_tab(self, link_element):
+        """
+        Clicks on a link element and switches to the new tab.
+
+        Args:
+            link_element (WebElement): The web element representing the link.
+
+        Returns:
+            str: The current URL after switching to the new tab.
+        """
+        link_element.click()
+        self.driver.switch_to.window(self.driver.window_handles[1])
+        return self.driver.current_url
+
+    @allure.step('Check link in new tab')
+    def check_link_in_new_tab(self, locator):
+        """
+        Checks the functionality of a link by opening it in a new tab.
+
+        Args:
+            locator (By): The locator of the link element.
 
         Returns:
             tuple: A tuple containing the link's href and the current URL or status code.
         """
-        simple_link = self.visible_element(self.locators.HOME_LINK)
-        link_href = simple_link.get_attribute('href')
-        request = requests.get(f"{link_href}")
-        if request.status_code == 200:
-            simple_link.click()
-            self.driver.switch_to.window(self.driver.window_handles[1])
-            url = self.driver.current_url
+        link_element = self.visible_element(locator)
+        link_href, status_code = self.get_link_status(link_element)
+        if status_code == 200:
+            url = self.open_link_in_new_tab(link_element)
             return link_href, url
         else:
-            return request.status_code, link_href
+            return status_code, link_href
 
-    @allure.step('New tab dynamic link')
-    def check_new_tab_dynamic_link(self):
+    @allure.step('Check link status')
+    def check_link_status(self, url, expected_status):
         """
-        Opens a new tab and navigates to a dynamic link to verify its URL and status code.
-
-        Returns:
-            tuple: A tuple containing the link's href and the current URL or status code.
-        """
-        dynamic_link = self.visible_element(self.locators.HOME_LINK)
-        link_href = dynamic_link.get_attribute('href')
-        request = requests.get(f"{link_href}")
-        if request.status_code == 200:
-            dynamic_link.click()
-            self.driver.switch_to.window(self.driver.window_handles[1])
-            url = self.driver.current_url
-            return link_href, url
-        else:
-            return request.status_code, link_href
-
-    @allure.step('Check created link')
-    def check_created_link(self, url):
-        """
-        Checks the status code of a created link.
+        Checks the status code of a given URL and verifies it against the expected status code.
 
         Args:
             url (str): The URL to check.
-
-        Returns:
-            int: The HTTP status code of the request.
-        """
-        request = requests.get(url)
-        print(f"Request URL: {url}, Status Code: {request.status_code}")
-        self.element_present(self.locators.CREATED_LINK).click()
-
-        if request.status_code == 201:
-            return request.status_code
-        else:
-            print(request.status_code)
-
-    @allure.step('Check no content link')
-    def check_no_content_link(self, url):
-        """
-        Checks the status code of a no-content link.
-
-        Args:
-            url (str): The URL to check.
-
-        Returns:
-            int: The HTTP status code of the request.
-        """
-        request = requests.get(url)
-        print(f"Request URL: {url}, Status Code: {request.status_code}")
-        self.element_present(self.locators.NO_CONTENT_LINK).click()
-
-        if request.status_code == 204:
-            return request.status_code
-        else:
-            print(request.status_code)
-
-    @allure.step('Check moved link')
-    def check_moved_link(self, url):
-        """
-        Checks the status code of a moved link.
-
-        Args:
-            url (str): The URL to check.
-
-        Returns:
-            int: The HTTP status code of the request.
-        """
-        request = requests.get(url)
-        print(f"Request URL: {url}, Status Code: {request.status_code}")
-        self.element_present(self.locators.MOVED_LINK).click()
-
-        if request.status_code == 301:
-            return request.status_code
-        else:
-            print(request.status_code)
-
-    @allure.step('Check forbidden link')
-    def check_forbidden_link(self, url):
-        """
-        Checks the status code of a forbidden link.
-
-        Args:
-            url (str): The URL to check.
-
-        Returns:
-            int: The HTTP status code of the request.
-        """
-        request = requests.get(url)
-        print(f"Request URL: {url}, Status Code: {request.status_code}")
-
-        forbidden_link = self.element_present(self.locators.FORBIDDEN_LINK)
-        self.go_to_element(forbidden_link)
-        return request.status_code
-
-    @allure.step('Check random checkbox')
-    def check_not_found_link(self, url):
-        """
-        Checks the status code of a not-found link.
-
-        Args:
-            url (str): The URL to check.
-
-        Returns:
-            int: The HTTP status code of the request.
-        """
-        request = requests.get(url)
-        print(f"Request URL: {url}, Status Code: {request.status_code}")
-
-        not_found = self.element_present(self.locators.NOT_FOUND_LINK)
-        self.go_to_element(not_found)
-        return request.status_code
-
-    @allure.step('Check bad request link')
-    def check_bad_request_link(self, url):
-        """
-        Checks the status code of a bad-request link.
-
-        Args:
-            url (str): The URL to check.
+            expected_status (int): The expected HTTP status code.
 
         Returns:
             int: The HTTP status code of the request.
         """
         response = requests.get(url)
-        status_code = response.status_code
+        actual_status = response.status_code
+        assert actual_status == expected_status, f"Expected status {expected_status}, but got {actual_status}."
+        return actual_status
+
+    @allure.step('Check new tab simple link')
+    def check_new_tab_simple_link(self):
+        return self.check_link_in_new_tab(self.locators.HOME_LINK)
+
+    @allure.step('Check new tab dynamic link')
+    def check_new_tab_dynamic_link(self):
+        return self.check_link_in_new_tab(self.locators.DYNAMIC_HOME_BUTTON)
+
+    @allure.step('Check created link')
+    def check_created_link(self, url):
+        return self.check_link_status(url, 201)
+
+    @allure.step('Check no content link')
+    def check_no_content_link(self, url):
+        self.check_link_status(url, 204)
+        self.element_present(self.locators.NO_CONTENT_LINK).click()
+
+    @allure.step('Check moved link')
+    def check_moved_link(self, url):
+        self.check_link_status(url, 301)
+        self.element_present(self.locators.MOVED_LINK).click()
+
+    @allure.step('Check forbidden link')
+    def check_forbidden_link(self, url):
+        self.check_link_status(url, 403)
+        forbidden_link = self.element_present(self.locators.FORBIDDEN_LINK)
+        self.go_to_element(forbidden_link)
+
+    @allure.step('Check not found link')
+    def check_not_found_link(self, url):
+        self.check_link_status(url, 404)
+        not_found = self.element_present(self.locators.NOT_FOUND_LINK)
+        self.go_to_element(not_found)
+
+    @allure.step('Check bad request link')
+    def check_bad_request_link(self, url):
+        self.check_link_status(url, 400)
         bad_request_button = self.element_is_clickable(self.locators.BAD_REQUEST_LINK)
         self.go_to_element(bad_request_button)
         bad_request_button.click()
-        return status_code
 
 
 class DownloadAndUploadPage(BasePage):
@@ -518,7 +468,12 @@ class DownloadAndUploadPage(BasePage):
         """
         file_name, path = generated_file()
         self.element_present(self.locators.UPLOAD_FILE).send_keys(path)
-        os.remove(path)
+
+        try:
+            os.remove(path)
+        except FileNotFoundError:
+            pass
+
         text = self.element_present(self.locators.UPLOADED_RESULT).text
         return file_name.split("\\")[-1], text.split("\\")[-1]
 
@@ -531,29 +486,16 @@ class DownloadAndUploadPage(BasePage):
         """
         link = self.element_present(self.locators.DOWNLOAD_FILE).get_attribute('href')
 
-        # Check if the link is a base64 data URI
-        if link.startswith("data:image/jpeg;base64,"):
-            # Strip the base64 prefix and decode the image
-            base64_data = link.split(",")[1]
-            image_data = base64.b64decode(base64_data)
+        if link.startswith("data:"):
+            base64_prefix, base64_data = link.split(",")
+            file_extension = base64_prefix.split("/")[1].split(";")[0]  # Extract file extension
+            file_exists, file_path = self.handle_base64_file_download(base64_data, file_extension)
 
-            # Create a random file name to save the image
-            path_name_file = rf'C:\Users\David\PycharmProjects\qa_automation_project\filetest{random.randint(0, 999)}.jpeg'
-
-            # Write the decoded image to a file
-            with open(path_name_file, 'wb') as file:
-                file.write(image_data)
-
-            # Verify the file exists
-            check_file = os.path.exists(path_name_file)
-
-            # Cleanup after the check
-            os.remove(path_name_file)
-
-            return check_file
+            if file_exists:
+                os.remove(file_path)
+            return file_exists
         else:
-            # Handle non-base64 links (e.g., regular HTTP URLs) if needed
-            raise ValueError("Unexpected URL schema, expected base64 data URI.")
+            raise ValueError(f"Unexpected URL schema, expected base64 data URI, got: {link}")
 
 
 class DynamicPropertiesPage(BasePage):

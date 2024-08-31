@@ -1,4 +1,9 @@
 # base_page.py
+import base64
+import os
+import random
+
+import requests
 from selenium.webdriver import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait as wait
 from selenium.webdriver.support import expected_conditions as EC
@@ -41,6 +46,18 @@ class BasePage:
         alert_text = alert_window.text
         alert_window.accept()
         return alert_text
+
+    def check_link_status(self, url, expected_status):
+        response = requests.get(url)
+        print(f"Request URL: {url}, Status Code: {response.status_code}")
+        return response.status_code == expected_status
+
+    def handle_base64_file_download(self, base64_data, file_extension):
+        file_path = rf'C:\path\to\file{random.randint(0, 999)}.{file_extension}'
+        image_data = base64.b64decode(base64_data)
+        with open(file_path, 'wb') as file:
+            file.write(image_data)
+        return os.path.exists(file_path), file_path
 
     def visible_element(self, locator, timeout=10):
         """
