@@ -85,8 +85,9 @@ class TestAlertsFramesWindows:
             """
             alerts_page = AlertsPage(driver, "https://demoqa.com/alerts")
             alerts_page.open()
-            confirm_box = alerts_page.check_confirm_alert()
-            assert confirm_box == "You selected Ok", "Alert did not show up"
+            confirm_box_text = alerts_page.check_confirm_alert()
+
+            assert confirm_box_text == "You selected Ok", "Confirmation text is incorrect"
 
         @allure.title('test prompt click')
         def test_prompt_click(self, driver):

@@ -76,9 +76,11 @@ class AlertsPage(BasePage):
             str: The text of the alert that appears after 5 seconds.
 
         Raises:
-            WebDriverException: If the element is not clickable, the alert does not appear, or the alert cannot be handled.
+            WebDriverException: If the element is not clickable, the alert does not appear,
+            or the alert cannot be handled.
         """
         self.element_is_clickable(self.locators.ALERT_AFTER_5_SECS_BUTTON).click()
+        self.alert_is_present()
         return self.handle_alert()
 
     @allure.step("Click button to display confirm alert")
@@ -94,11 +96,13 @@ class AlertsPage(BasePage):
             str: The text of the confirmation alert that appears.
 
         Raises:
-            WebDriverException: If the element is not clickable, the confirmation alert does not appear, or the alert cannot be handled.
+            WebDriverException: If the element is not clickable, the confirmation alert does not appear,
+            or the alert cannot be handled.
         """
         self.element_is_clickable(self.locators.CONFIRM_BOX_ALERT_BUTTON).click()
-        return self.handle_alert()
-
+        self.handle_alert()
+        result = self.element_present(self.locators.CONFIRM_BOX_ALERT_RESULT)
+        return result.text
 
     @allure.step("Check prompt box input")
     def check_prompt_box_input(self):
@@ -202,4 +206,3 @@ class ModalButtonPage(BasePage):
         allure.attach(large_modal_text, "Large Modal Text", allure.attachment_type.TEXT)
 
         return small_modal_text, large_modal_text
-
